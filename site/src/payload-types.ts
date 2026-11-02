@@ -145,6 +145,10 @@ export interface Article {
    */
   chapo?: string | null;
   cover?: (number | null) | Media;
+  /**
+   * Dans les listes, l’image est recadrée en rectangle. Choisir la partie à garder visible. Vérifier le résultat avec le bouton « Aperçu » avant de publier.
+   */
+  coverPosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
   content?: {
     root: {
       type: string;
@@ -176,10 +180,14 @@ export interface Article {
   videoUrl?: string | null;
   rubrique: number | Rubrique;
   date: string;
+  /**
+   * Cocher pour afficher l’article en haut de la page d’accueil.
+   */
   featured?: boolean | null;
   /**
-   * Facultatif.
+   * Décocher pour masquer l’article sans le supprimer.
    */
+  visible?: boolean | null;
   auteur?: string | null;
   /**
    * Fin de l'adresse de la page. Laissez vide : elle est créée à partir du titre.
@@ -433,6 +441,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   title?: T;
   chapo?: T;
   cover?: T;
+  coverPosition?: T;
   content?: T;
   documents?:
     | T
@@ -445,6 +454,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   rubrique?: T;
   date?: T;
   featured?: T;
+  visible?: T;
   auteur?: T;
   slug?: T;
   legacy?:

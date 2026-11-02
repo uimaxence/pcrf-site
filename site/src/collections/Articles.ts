@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminField, isLoggedIn, publishedOrLoggedIn } from '@/access'
+import { articlesPublicRead, isAdmin, isAdminField, isLoggedIn } from '@/access'
 import { slugField } from '@/fields/slug'
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidate'
 
@@ -8,14 +8,14 @@ export const Articles: CollectionConfig = {
   labels: { singular: 'Article', plural: 'Articles' },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'rubrique', 'date', '_status'],
+    defaultColumns: ['title', 'rubrique', 'date', 'featured', 'visible', '_status'],
     group: 'Contenu',
     description: 'Écrire un article : titre, rubrique, image, texte. Enregistrer comme brouillon ou publier.',
     listSearchableFields: ['title', 'chapo'],
     pagination: { defaultLimit: 25 },
     preview: (doc) => `${process.env.NEXT_PUBLIC_SERVER_URL || ''}/${doc?.slug}`,
   },
-  access: { read: publishedOrLoggedIn, create: isLoggedIn, update: isLoggedIn, delete: isAdmin },
+  access: { read: articlesPublicRead, create: isLoggedIn, update: isLoggedIn, delete: isAdmin },
   defaultSort: '-date',
   // Brouillons : « Enregistrer le brouillon » / « Publier ». Pas d'enregistrement automatique pour éviter les brouillons vides.
   versions: { drafts: true, maxPerDoc: 20 },
@@ -29,6 +29,24 @@ export const Articles: CollectionConfig = {
       admin: { description: 'Deux ou trois phrases de résumé, affichées en liste et en tête de l’article.' },
     },
     { name: 'cover', type: 'upload', relationTo: 'media', label: 'Image principale', filterOptions: { mimeType: { contains: 'image' } } },
+    {
+      name: 'coverPosition',
+      type: 'select',
+      label: 'Cadrage de l’image dans les listes',
+      defaultValue: 'center',
+      options: [
+        { label: 'Centre', value: 'center' },
+        { label: 'Haut (garder le haut de l’image)', value: 'top' },
+        { label: 'Bas (garder le bas de l’image)', value: 'bottom' },
+        { label: 'Gauche (garder la gauche de l’image)', value: 'left' },
+        { label: 'Droite (garder la droite de l’image)', value: 'right' },
+      ],
+      admin: {
+        description:
+          'Dans les listes, l’image est recadrée en rectangle. Choisir la partie à garder visible. Vérifier le résultat avec le bouton « Aperçu » avant de publier.',
+        condition: (data) => Boolean(data?.cover),
+      },
+    },
     { name: 'content', type: 'richText', label: 'Texte' },
     {
       name: 'documents',
@@ -65,8 +83,24 @@ export const Articles: CollectionConfig = {
       admin: { position: 'sidebar', date: { pickerAppearance: 'dayAndTime', displayFormat: 'dd/MM/yyyy HH:mm' } },
       index: true,
     },
-    { name: 'featured', type: 'checkbox', label: 'Mettre à la une', defaultValue: false, admin: { position: 'sidebar' }, index: true },
-    { name: 'auteur', type: 'text', label: 'Signature', admin: { position: 'sidebar', description: 'Facultatif.' } },
+    {
+      name: 'featured',
+      type: 'checkbox',
+      label: 'À la une',
+      defaultValue: false,
+      admin: { position: 'sidebar', description: 'Cocher pour afficher l’article en haut de la page d’accueil.' },
+      index: true,
+    },
+    {
+      name: 'visible',
+      type: 'checkbox',
+      label: 'Visible sur le site',
+      defaultValue: true,
+      admin: { position: 'sidebar', description: 'Décocher pour masquer l’article sans le supprimer.' },
+      index: true,
+    },
+    // Signature : plus affichée sur le site. Le champ reste en base mais n’est plus proposé.
+    { name: 'auteur', type: 'text', label: 'Signature', admin: { hidden: true } },
     slugField('title'),
     // Contenu importé de SPIP
     {

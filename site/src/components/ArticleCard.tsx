@@ -3,6 +3,7 @@ import type { Article } from '@/payload-types'
 import { formatDate, excerpt, frTypo } from '@/lib/format'
 import { mediaUrl, mediaAlt } from '@/lib/media'
 import { rubriqueHref } from '@/lib/links'
+import { getSite } from '@/lib/queries'
 import { youtubeId, youtubeThumb } from '@/lib/youtube'
 
 type Props = { article: Partial<Article> & Pick<Article, 'title' | 'slug'>; variant?: 'card' | 'lead' | 'row' | 'compact' }
@@ -18,8 +19,12 @@ export function articleImage(article: Partial<Article>, size: 'thumbnail' | 'car
   return null
 }
 
-export function ArticleCard({ article, variant = 'card' }: Props) {
+const POSITIONS: Record<string, string> = { top: 'center top', bottom: 'center bottom', left: 'left center', right: 'right center' }
+
+export async function ArticleCard({ article, variant = 'card' }: Props) {
   const img = articleImage(article, variant === 'lead' ? 'large' : variant === 'compact' ? 'thumbnail' : 'card')
+  const logo = img ? null : mediaUrl((await getSite()).logo, 'card')
+  const objectPosition = article.coverPosition ? POSITIONS[article.coverPosition] : undefined
   const rub = article.rubrique && typeof article.rubrique === 'object' ? article.rubrique : null
   const href = `/${article.slug}`
   const title = frTypo(article.title.trim())
@@ -30,11 +35,16 @@ export function ArticleCard({ article, variant = 'card' }: Props) {
       {img ? (
         <Link className="card__media" href={href} tabIndex={-1} aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={img.src} alt="" loading={variant === 'lead' ? 'eager' : 'lazy'} />
+          <img src={img.src} alt="" loading={variant === 'lead' ? 'eager' : 'lazy'} style={objectPosition ? { objectPosition } : undefined} />
         </Link>
       ) : (
         <Link className="card__media card__media--empty" href={href} tabIndex={-1} aria-hidden="true">
-          <span>PCRF</span>
+          {logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logo} alt="" loading="lazy" />
+          ) : (
+            <span>PCRF</span>
+          )}
         </Link>
       )}
       <div className="card__body">

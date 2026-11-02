@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import type { Article, Rubrique } from '@/payload-types'
 import { getPayloadClient } from '@/lib/payload'
 
@@ -10,12 +11,16 @@ export const ARTICLE_LIST_SELECT = {
   rubrique: true,
   videoUrl: true,
   featured: true,
+  coverPosition: true,
 } as const
 
-export async function getSite() {
+/** Filtre commun : écarte les articles masqués (case « Visible sur le site » décochée). */
+export const VISIBLE = { visible: { not_equals: false } } as const
+
+export const getSite = cache(async () => {
   const payload = await getPayloadClient()
   return payload.findGlobal({ slug: 'site', depth: 1 })
-}
+})
 export async function getNavigation() {
   const payload = await getPayloadClient()
   return payload.findGlobal({ slug: 'navigation', depth: 2 })
@@ -62,7 +67,7 @@ export async function getLatestArticles(limit = 6, excludeIds: (number | string)
   const payload = await getPayloadClient()
   return payload.find({
     collection: 'articles',
-    where: excludeIds.length ? { id: { not_in: excludeIds } } : {},
+    where: excludeIds.length ? { and: [VISIBLE, { id: { not_in: excludeIds } }] } : VISIBLE,
     sort: '-date',
     limit,
     depth: 1,
@@ -74,16 +79,16 @@ export async function getFeaturedArticles(limit = 3) {
   const payload = await getPayloadClient()
   const featured = await payload.find({
     collection: 'articles',
-    where: { featured: { equals: true } },
+    where: { and: [VISIBLE, { featured: { equals: true } }] },
     sort: '-date',
     limit,
     depth: 1,
     select: ARTICLE_LIST_SELECT,
   })
-  if (featured.docs.length >= limit) return featured.docs
-  // Pas assez d'articles cochés « à la une » : on complète avec les plus récents.
-  const fill = await getLatestArticles(limit - featured.docs.length, featured.docs.map((a) => a.id))
-  return [...featured.docs, ...fill.docs]
+  // Des articles sont cochés « à la une » : on n'affiche qu'eux.
+  if (featured.docs.length > 0) return featured.docs
+  // Aucun article coché : on affiche les plus récents.
+  return (await getLatestArticles(limit)).docs
 }
 
 export async function getArticlesByRubrique(rubrique: Rubrique, page = 1, limit = 12) {
@@ -91,7 +96,7 @@ export async function getArticlesByRubrique(rubrique: Rubrique, page = 1, limit 
   const ids = await rubriqueFamilyIds(rubrique)
   return payload.find({
     collection: 'articles',
-    where: { rubrique: { in: ids } },
+    where: { and: [VISIBLE, { rubrique: { in: ids } }] },
     sort: '-date',
     page,
     limit,
@@ -102,7 +107,7 @@ export async function getArticlesByRubrique(rubrique: Rubrique, page = 1, limit 
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const payload = await getPayloadClient()
-  const res = await payload.find({ collection: 'articles', where: { slug: { equals: slug } }, limit: 1, depth: 2 })
+  const res = await payload.find({ collection: 'articles', where: { and: [VISIBLE, { slug: { equals: slug } }] }, limit: 1, depth: 2 })
   return res.docs[0] ?? null
 }
 export async function getPageBySlug(slug: string) {
@@ -120,7 +125,7 @@ export async function getLatestVideo(): Promise<Article | null> {
   const payload = await getPayloadClient()
   const res = await payload.find({
     collection: 'articles',
-    where: { videoUrl: { like: 'youtu' } },
+    where: { and: [VISIBLE, { videoUrl: { like: 'youtu' } }] },
     sort: '-date',
     limit: 1,
     depth: 1,
@@ -140,7 +145,50 @@ export async function searchArticles(q: string, page = 1, limit = 20) {
   const term = q.trim()
   return payload.find({
     collection: 'articles',
-    where: { or: [{ title: { like: term } }, { chapo: { like: term } }, { 'legacy.html': { like: term } }] },
+    where: { and: [VISIBLE, { or: [{ title: { like: term } }, { chapo: { like: term } }, { 'legacy.html': { like: term } }] }] },
+    sort: '-date',
+    page,
+    limit,
+    depth: 1,
+    select: ARTICLE_LIST_SELECT,
+  })
+}
+
+/** Articles directement rattachés à une rubrique (sans ses sous-rubriques). */
+export async function getDirectArticles(rubrique: Rubrique) {
+  const payload = await getPayloadClient()
+  const res = await payload.find({
+    collection: 'articles',
+    where: { and: [VISIBLE, { rubrique: { equals: rubrique.id } }] },
+    sort: '-date',
+    limit: 50,
+    depth: 1,
+    select: ARTICLE_LIST_SELECT,
+  })
+  return res.docs
+}
+
+/** Articles d'une rubrique et de ses sous-rubriques, sans une liste d'identifiants. */
+export async function getFamilyArticlesExcluding(rubrique: Rubrique, excludeIds: (number | string)[], page = 1, limit = 12) {
+  const payload = await getPayloadClient()
+  const ids = await rubriqueFamilyIds(rubrique)
+  return payload.find({
+    collection: 'articles',
+    where: { and: [VISIBLE, { rubrique: { in: ids } }, ...(excludeIds.length ? [{ id: { not_in: excludeIds } }] : [])] },
+    sort: '-date',
+    page,
+    limit,
+    depth: 1,
+    select: ARTICLE_LIST_SELECT,
+  })
+}
+
+/** Articles liés à un congrès (titre ou chapeau), du plus récent au plus ancien. */
+export async function getCongresArticles(page = 1, limit = 24) {
+  const payload = await getPayloadClient()
+  return payload.find({
+    collection: 'articles',
+    where: { and: [VISIBLE, { or: [{ title: { like: 'congrès' } }, { title: { like: 'congres' } }, { chapo: { like: 'congrès' } }] }] },
     sort: '-date',
     page,
     limit,

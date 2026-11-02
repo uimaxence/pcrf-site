@@ -89,6 +89,7 @@ ${congres ? `<p><a href="/Congres-fondateur-du-Parti">Congrès fondateur, 1er Co
         quiSommesNous ? L('Qui sommes-nous ?', 'article', quiSommesNous) : null,
         materiel ? L('Matériel', 'rubrique', materiel) : null,
         L('Programme', 'page', programme),
+        L('Congrès', 'url', null, '/congres'),
         theorie ? L('Théorie', 'rubrique', theorie) : null,
         liens ? L('Liens', 'article', liens) : null,
         L('Archives', 'url', null, 'https://archives.pcrf-ic.fr/'),

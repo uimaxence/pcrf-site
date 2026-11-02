@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation'
 import { ArticleCard } from '@/components/ArticleCard'
 import { Pagination } from '@/components/Pagination'
 import { rubriqueHref } from '@/lib/links'
-import { getArticlesByRubrique, getRubriqueBySlug, getRubriques } from '@/lib/queries'
+import { SectionTitle } from '@/components/SectionTitle'
+import { getArticlesByRubrique, getDirectArticles, getFamilyArticlesExcluding, getRubriqueBySlug, getRubriques, getSite } from '@/lib/queries'
 
 export const revalidate = 300
 
@@ -22,8 +23,13 @@ export default async function RubriquePage({ params, searchParams }: Props) {
   const page = Math.max(1, Number(pageParam) || 1)
   const rubrique = await getRubriqueBySlug(slug)
   if (!rubrique) notFound()
-  const [all, res] = await Promise.all([getRubriques(), getArticlesByRubrique(rubrique, page, 12)])
+  const all = await getRubriques()
   const children = all.filter((r) => (typeof r.parent === 'object' && r.parent ? r.parent.id : r.parent) === rubrique.id)
+  // Rubrique avec sous-rubriques (ex. Matériel) : ses propres articles passent d'abord, au-dessus des tracts et affiches.
+  const direct = children.length ? await getDirectArticles(rubrique) : []
+  const res = direct.length ? await getFamilyArticlesExcluding(rubrique, direct.map((d) => d.id), page, 12) : await getArticlesByRubrique(rubrique, page, 12)
+  const site = rubrique.slug === 'videos' ? await getSite() : null
+  const youtube = site?.youtube
   const parent = rubrique.parent && typeof rubrique.parent === 'object' ? rubrique.parent : null
 
   return (
@@ -42,6 +48,11 @@ export default async function RubriquePage({ params, searchParams }: Props) {
       <header className="page-head">
         <h1>{rubrique.name}</h1>
         {rubrique.description && <p>{rubrique.description}</p>}
+        {youtube && (
+          <a className="yt-link" href={youtube} target="_blank" rel="noopener">
+            Voir toutes nos vidéos sur YouTube <span aria-hidden="true">→</span>
+          </a>
+        )}
         {children.length > 0 && (
           <ul className="chips">
             {children.map((c) => (
@@ -52,6 +63,17 @@ export default async function RubriquePage({ params, searchParams }: Props) {
           </ul>
         )}
       </header>
+      {direct.length > 0 && page === 1 && (
+        <section className="highlight" aria-label={`À la une dans ${rubrique.name}`}>
+          <SectionTitle>À la une</SectionTitle>
+          <div className="grid-3">
+            {direct.map((a) => (
+              <ArticleCard key={a.id} article={a} />
+            ))}
+          </div>
+        </section>
+      )}
+      {direct.length > 0 && res.docs.length > 0 && <SectionTitle>{children.map((c) => c.name).join(' et ')}</SectionTitle>}
       {res.docs.length ? (
         <div className="grid-3">
           {res.docs.map((a) => (

@@ -10,3 +10,9 @@ export const publishedOrLoggedIn: Access = ({ req: { user } }) => {
   if (user) return true
   return { _status: { equals: 'published' } }
 }
+
+/** API publique des articles : publiés et non masqués (case « Visible sur le site »). */
+export const articlesPublicRead: Access = ({ req: { user } }) => {
+  if (user) return true
+  return { _status: { equals: 'published' }, visible: { not_equals: false } }
+}

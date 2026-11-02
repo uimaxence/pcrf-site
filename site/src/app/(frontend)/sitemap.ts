@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
   const payload = await getPayloadClient()
   const [articles, rubriques, pages] = await Promise.all([
-    payload.find({ collection: 'articles', pagination: false, depth: 0, select: { slug: true, updatedAt: true }, sort: '-date' }),
+    payload.find({ collection: 'articles', where: { visible: { not_equals: false } }, pagination: false, depth: 0, select: { slug: true, updatedAt: true }, sort: '-date' }),
     payload.find({ collection: 'rubriques', pagination: false, depth: 0, select: { slug: true, updatedAt: true } }),
     payload.find({ collection: 'pages', pagination: false, depth: 0, select: { slug: true, updatedAt: true } }),
   ])

@@ -118,7 +118,6 @@ export default async function SlugPage({ params }: Params) {
           <h1 className="article__title">{frTypo(a.title)}</h1>
           <div className="article__meta">
             <time dateTime={a.date}>{formatDate(a.date)}</time>
-            {a.auteur && <span>Par {a.auteur}</span>}
           </div>
           {a.chapo && <p className="article__chapo">{frTypo(a.chapo)}</p>}
         </header>
