@@ -22,10 +22,15 @@ En développement, Payload adapte la base automatiquement (`push`). En productio
 
 ```sh
 cd site
-pnpm payload migrate:create nom_du_changement   # à chaque modification des collections
+pnpm payload migrate:create nom_du_changement   # à chaque modification des collections (voir l'avertissement ci-dessous)
 pnpm payload migrate                            # à chaque déploiement, avant le démarrage
 pnpm programme <pdf> <page1> <page2>            # une fois, après le seed : PDF du programme + pages d'aperçu (les fichiers sont dans reference/programme et migration/media/IMG/pdf)
 ```
+
+> **Attention : générer les migrations avec les variables `S3_*` définies.** Le plugin de stockage ajoute des colonnes à la
+> table des médias (`prefix`, `_objectkey`) uniquement quand `S3_BUCKET` est renseigné. Sans lui, `migrate:create` produit un
+> schéma sans ces colonnes, et la production échoue avec « column "prefix" does not exist ». En local, chargez d'abord
+> `site/.env.neon.local` (ou exportez les `S3_*`), puis lancez `pnpm payload migrate:create`.
 
 ## Construire et lancer
 
