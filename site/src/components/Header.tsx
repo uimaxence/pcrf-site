@@ -2,13 +2,21 @@ import Link from 'next/link'
 import type { Navigation, Site } from '@/payload-types'
 import { resolveLink } from '@/lib/links'
 import { mediaUrl } from '@/lib/media'
+import { MobileMenu, type MenuItem } from './MobileMenu'
 import { SearchForm } from './SearchForm'
 import { SocialLinks } from './SocialLinks'
+
+function toItems(items: Navigation['primary']): MenuItem[] {
+  return (items ?? []).map((item) => {
+    const { href, external } = resolveLink(item)
+    return { label: item.label, href, external: external || Boolean(item.newTab) }
+  })
+}
 
 function NavRow({ items, className }: { items: Navigation['primary']; className: string }) {
   if (!items?.length) return null
   return (
-    <nav className={`nav ${className}`} aria-label="Menu">
+    <nav className={`nav nav--desktop ${className}`} aria-label="Menu">
       <ul className="wrap nav__list">
         {items.map((item) => {
           const { href, external } = resolveLink(item)
@@ -35,8 +43,18 @@ export function Header({ site, nav }: { site: Site; nav: Navigation }) {
     <header className="site-header">
       <div className="topbar">
         <div className="wrap topbar__in">
-          <SocialLinks site={site} />
-          <SearchForm compact />
+          <MobileMenu
+            name={site.shortName || 'PCRF'}
+            primary={[{ label: 'Accueil', href: '/', external: false }, ...toItems(nav.primary)]}
+            secondary={toItems(nav.secondary)}
+            newsletterUrl={site.brevoFormUrl}
+            search={<SearchForm id="q-menu" />}
+            social={<SocialLinks site={site} className="social--menu" />}
+          />
+          <SocialLinks site={site} className="topbar__social" />
+          <div className="topbar__search">
+            <SearchForm compact />
+          </div>
           <div className="topbar__actions">
             {site.brevoFormUrl && (
               <a className="btn btn--ghost" href={site.brevoFormUrl} target="_blank" rel="noopener">
