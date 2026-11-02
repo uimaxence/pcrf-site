@@ -1,0 +1,96 @@
+[
+  {
+    "slug": "-AFFICHES-",
+    "url": "https://www.pcrf-ic.fr/-AFFICHES-",
+    "title": "AFFICHES",
+    "parents": [
+      {
+        "slug": "-Materiel-",
+        "name": "Matériel"
+      }
+    ],
+    "description": null
+  },
+  {
+    "slug": "-Campagnes-",
+    "url": "https://www.pcrf-ic.fr/-Campagnes-",
+    "title": "Campagnes",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-Don-",
+    "url": "https://www.pcrf-ic.fr/-Don-",
+    "title": "Don",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-France-",
+    "url": "https://www.pcrf-ic.fr/-France-",
+    "title": "France",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-Informations-",
+    "url": "https://www.pcrf-ic.fr/-Informations-",
+    "title": "Informations",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-International-",
+    "url": "https://www.pcrf-ic.fr/-International-",
+    "title": "International",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-Journal-",
+    "url": "https://www.pcrf-ic.fr/-Journal-",
+    "title": "Journal",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-Luttes-",
+    "url": "https://www.pcrf-ic.fr/-Luttes-",
+    "title": "Luttes",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-Materiel-",
+    "url": "https://www.pcrf-ic.fr/-Materiel-",
+    "title": "Matériel",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-TRACTS-",
+    "url": "https://www.pcrf-ic.fr/-TRACTS-",
+    "title": "TRACTS",
+    "parents": [
+      {
+        "slug": "-Materiel-",
+        "name": "Matériel"
+      }
+    ],
+    "description": null
+  },
+  {
+    "slug": "-Theorie-",
+    "url": "https://www.pcrf-ic.fr/-Theorie-",
+    "title": "Théorie",
+    "parents": [],
+    "description": null
+  },
+  {
+    "slug": "-Videos-",
+    "url": "https://www.pcrf-ic.fr/-Videos-",
+    "title": "Vidéos",
+    "parents": [],
+    "description": null
+  }
+]

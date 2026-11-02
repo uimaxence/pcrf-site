@@ -1,0 +1,121 @@
+# Rapport de collecte pcrf-ic.fr
+
+Généré le 2026-10-28.
+
+- Fichiers HTML lus : 1016
+- Articles : 1002
+- Rubriques : 12
+- Autres pages (auteurs, etc.) : 2 , _Contact_
+- Médias distincts référencés : 2075
+- Auteurs distincts : 7
+- Mots au total : 622077
+
+## Articles par rubrique de premier niveau
+| Rubrique | Articles |
+|---|---|
+| France | 338 |
+| International | 308 |
+| Matériel | 105 |
+| Luttes | 90 |
+| Journal | 67 |
+| Vidéos | 40 |
+| Théorie | 35 |
+| Informations | 9 |
+| Campagnes | 9 |
+| Don | 1 |
+
+## Articles par chemin de rubrique complet
+| Chemin | Articles |
+|---|---|
+| France | 338 |
+| International | 308 |
+| Luttes | 90 |
+| Matériel > TRACTS | 86 |
+| Journal | 67 |
+| Vidéos | 40 |
+| Théorie | 35 |
+| Matériel | 10 |
+| Matériel > AFFICHES | 9 |
+| Informations | 9 |
+| Campagnes | 9 |
+| Don | 1 |
+
+## Articles par année
+| Année | Articles |
+|---|---|
+| 2016 | 44 |
+| 2017 | 99 |
+| 2018 | 117 |
+| 2019 | 102 |
+| 2020 | 130 |
+| 2021 | 108 |
+| 2022 | 102 |
+| 2023 | 74 |
+| 2024 | 75 |
+| 2025 | 86 |
+| 2026 | 65 |
+
+## Documents joints par type
+| Type | Nombre |
+|---|---|
+| application/pdf | 384 |
+| image/jpeg | 161 |
+| (aucun) | 145 |
+| image/png | 41 |
+| application/vnd.oasis.opendocument.text | 1 |
+
+## Points d'attention
+| Indicateur | Articles |
+|---|---|
+| noLogo | 27 |
+| noDate | 0 |
+| empty | 95 |
+| hasIframe | 5 |
+| hasPdf | 316 |
+| hasTable | 0 |
+| hasStyleAttr | 13 |
+| hasRawImgNoLink | 0 |
+
+### Exemples
+- hasIframe (vidéos intégrées) :
+  - La-revolution-aujourd-hui-video-du
+  - Message-du-Secretaire-general-du
+  - Sur-la-5eme-branche-de-la-Securite
+  - Sur-la-lutte-des-travailleurs-de
+  - Sur-la-mort-de-George-Floyd
+- hasTable :
+
+- hasStyleAttr (mise en forme collée à la main) :
+  - Actualite-des-monopoles-francais
+  - Analyse-de-l-actualite-politique
+  - Contre-l-UE-du-capital-Meeting
+  - Etude-du-Capital-Karl-Marx-Seance
+  - Etude-du-Capital-de-Karl-MARX-2eme
+  - Etude-du-Capital-de-Karl-Marx-3eme
+  - Etude-du-Capital-de-Karl-Marx-4eme
+  - Etude-du-Capital-de-Karl-Marx-5eme
+- empty :
+  - AFFICHE-Presidentielles
+  - AFFICHES-Fondation-du-Parti
+  - AFFICHES-contre-l-UE
+  - AFFICHES-contre-le-capitalisme
+  - AFFICHES-contre-les-guerres-de-l
+  - Affaire-des-sous-marins-Australie
+  - Affiches-Lenine
+  - Comite-Central-du-PCRF-novembre
+- noDate :
+
+
+## Rubriques
+- AFFICHES (-AFFICHES-) sous Matériel
+- Campagnes (-Campagnes-)
+- Don (-Don-)
+- France (-France-)
+- Informations (-Informations-)
+- International (-International-)
+- Journal (-Journal-)
+- Luttes (-Luttes-)
+- Matériel (-Materiel-)
+- TRACTS (-TRACTS-) sous Matériel
+- Théorie (-Theorie-)
+- Vidéos (-Videos-)

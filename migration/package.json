@@ -1,0 +1,15 @@
+{
+  "name": "pcrf-migration",
+  "private": true,
+  "type": "module",
+  "description": "Récupération du contenu de www.pcrf-ic.fr (SPIP) pour la refonte",
+  "scripts": {
+    "scrape": "node scripts/scrape.mjs",
+    "parse": "node scripts/parse.mjs",
+    "media": "node scripts/media.mjs",
+    "ids": "node scripts/ids.mjs"
+  },
+  "dependencies": {
+    "cheerio": "1.0.0"
+  }
+}

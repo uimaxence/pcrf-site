@@ -1,0 +1,15 @@
+# Données locales / artefacts
+.pgdata/
+.DS_Store
+node_modules/
+export/
+*.log
+
+# Non versionné : brief client et copies HTML de l'ancien site (pour mémoire, en local seulement)
+contexte/
+reference/ancien-site/*.html
+reference/eca-parties.html
+
+# Fichiers d'instructions pour assistants IA (régénérés par `next dev`)
+site/AGENTS.md
+site/CLAUDE.md

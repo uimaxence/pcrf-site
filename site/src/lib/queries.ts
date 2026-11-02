@@ -1,0 +1,150 @@
+import type { Article, Rubrique } from '@/payload-types'
+import { getPayloadClient } from '@/lib/payload'
+
+export const ARTICLE_LIST_SELECT = {
+  title: true,
+  slug: true,
+  chapo: true,
+  cover: true,
+  date: true,
+  rubrique: true,
+  videoUrl: true,
+  featured: true,
+} as const
+
+export async function getSite() {
+  const payload = await getPayloadClient()
+  return payload.findGlobal({ slug: 'site', depth: 1 })
+}
+export async function getNavigation() {
+  const payload = await getPayloadClient()
+  return payload.findGlobal({ slug: 'navigation', depth: 2 })
+}
+export async function getAccueil() {
+  const payload = await getPayloadClient()
+  return payload.findGlobal({ slug: 'accueil', depth: 2 })
+}
+
+export async function getRubriques(): Promise<Rubrique[]> {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'rubriques', limit: 100, sort: 'order', depth: 0 })
+  return res.docs
+}
+
+export async function getRubriqueBySlug(slug: string): Promise<Rubrique | null> {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'rubriques', where: { slug: { equals: slug } }, limit: 1, depth: 1 })
+  return res.docs[0] ?? null
+}
+export async function getRubriqueByLegacySlug(legacySlug: string): Promise<Rubrique | null> {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'rubriques', where: { legacySlug: { equals: legacySlug } }, limit: 1, depth: 0 })
+  return res.docs[0] ?? null
+}
+
+/** Identifiants d'une rubrique et de ses sous-rubriques. */
+export async function rubriqueFamilyIds(rubrique: Rubrique): Promise<(number | string)[]> {
+  const all = await getRubriques()
+  const ids: (number | string)[] = [rubrique.id]
+  let frontier = [rubrique.id]
+  while (frontier.length) {
+    const children = all.filter((r) => {
+      const p = typeof r.parent === 'object' && r.parent ? r.parent.id : r.parent
+      return p != null && frontier.includes(p)
+    })
+    frontier = children.map((c) => c.id)
+    ids.push(...frontier)
+  }
+  return ids
+}
+
+export async function getLatestArticles(limit = 6, excludeIds: (number | string)[] = []) {
+  const payload = await getPayloadClient()
+  return payload.find({
+    collection: 'articles',
+    where: excludeIds.length ? { id: { not_in: excludeIds } } : {},
+    sort: '-date',
+    limit,
+    depth: 1,
+    select: ARTICLE_LIST_SELECT,
+  })
+}
+
+export async function getFeaturedArticles(limit = 3) {
+  const payload = await getPayloadClient()
+  const featured = await payload.find({
+    collection: 'articles',
+    where: { featured: { equals: true } },
+    sort: '-date',
+    limit,
+    depth: 1,
+    select: ARTICLE_LIST_SELECT,
+  })
+  if (featured.docs.length >= limit) return featured.docs
+  // Pas assez d'articles cochés « à la une » : on complète avec les plus récents.
+  const fill = await getLatestArticles(limit - featured.docs.length, featured.docs.map((a) => a.id))
+  return [...featured.docs, ...fill.docs]
+}
+
+export async function getArticlesByRubrique(rubrique: Rubrique, page = 1, limit = 12) {
+  const payload = await getPayloadClient()
+  const ids = await rubriqueFamilyIds(rubrique)
+  return payload.find({
+    collection: 'articles',
+    where: { rubrique: { in: ids } },
+    sort: '-date',
+    page,
+    limit,
+    depth: 1,
+    select: ARTICLE_LIST_SELECT,
+  })
+}
+
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'articles', where: { slug: { equals: slug } }, limit: 1, depth: 2 })
+  return res.docs[0] ?? null
+}
+export async function getPageBySlug(slug: string) {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'pages', where: { slug: { equals: slug } }, limit: 1, depth: 2 })
+  return res.docs[0] ?? null
+}
+export async function getArticleBySpipId(id: number): Promise<Article | null> {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'articles', where: { 'legacy.spipId': { equals: id } }, limit: 1, depth: 0 })
+  return res.docs[0] ?? null
+}
+
+export async function getLatestVideo(): Promise<Article | null> {
+  const payload = await getPayloadClient()
+  const res = await payload.find({
+    collection: 'articles',
+    where: { videoUrl: { like: 'youtu' } },
+    sort: '-date',
+    limit: 1,
+    depth: 1,
+  })
+  return res.docs[0] ?? null
+}
+
+export async function getLatestInRubriqueSlug(slug: string, limit = 1) {
+  const r = await getRubriqueBySlug(slug)
+  if (!r) return []
+  const res = await getArticlesByRubrique(r, 1, limit)
+  return res.docs
+}
+
+export async function searchArticles(q: string, page = 1, limit = 20) {
+  const payload = await getPayloadClient()
+  const term = q.trim()
+  return payload.find({
+    collection: 'articles',
+    where: { or: [{ title: { like: term } }, { chapo: { like: term } }, { 'legacy.html': { like: term } }] },
+    sort: '-date',
+    page,
+    limit,
+    depth: 1,
+    select: ARTICLE_LIST_SELECT,
+  })
+}
