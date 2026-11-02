@@ -7,7 +7,8 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  // Image Docker autonome ; sur Vercel, le packaging est géré par la plateforme.
+  output: process.env.VERCEL ? undefined : 'standalone',
   images: {
     localPatterns: [
       {
