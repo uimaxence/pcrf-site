@@ -184,12 +184,12 @@ export async function getFamilyArticlesExcluding(rubrique: Rubrique, excludeIds:
   })
 }
 
-/** Articles liés à un congrès (titre ou chapeau), du plus récent au plus ancien. */
+/** Articles choisis pour la page Congrès (case « Page Congrès » cochée), du plus récent au plus ancien. */
 export async function getCongresArticles(page = 1, limit = 24) {
   const payload = await getPayloadClient()
   return payload.find({
     collection: 'articles',
-    where: { and: [VISIBLE, { or: [{ title: { like: 'congrès' } }, { title: { like: 'congres' } }, { chapo: { like: 'congrès' } }] }] },
+    where: { and: [VISIBLE, { congres: { equals: true } }] },
     sort: '-date',
     page,
     limit,

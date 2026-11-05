@@ -106,6 +106,14 @@ export const Articles: CollectionConfig = {
       index: true,
     },
     {
+      name: 'congres',
+      type: 'checkbox',
+      label: 'Page Congrès',
+      defaultValue: false,
+      admin: { position: 'sidebar', description: 'Cocher pour afficher l’article sur la page Congrès.' },
+      index: true,
+    },
+    {
       name: 'visible',
       type: 'checkbox',
       label: 'Visible sur le site',

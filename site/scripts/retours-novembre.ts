@@ -1,6 +1,6 @@
 /**
  * Retours du secrétariat (5 novembre) : sous-rubrique « Brochures » dans Matériel,
- * 4 articles à la une, images défilantes de l'en-tête.
+ * 4 articles à la une, cinq articles de la page Congrès, images défilantes de l'en-tête.
  *
  *   pnpm retours:novembre [image1 image2 ...]
  *
@@ -34,6 +34,20 @@ async function main() {
   }
 
   await payload.updateGlobal({ slug: 'accueil', data: { featuredCount: 4 }, ...ctx })
+
+  // Page Congrès : seuls ces cinq articles y figurent (case « Page Congrès »).
+  const CONGRES = ['Deuxieme-Congres-du-PCRF-Pour-un', 'Congres-fondateur-du-Parti', 'Textes-adoptes-au-1er-Congres-du', 'Premier-Congres-du-PCRF-premier', 'Les-Partis-freres-saluent-le']
+  const flagged = await payload.find({ collection: 'articles', where: { congres: { equals: true } }, limit: 200, depth: 0 })
+  for (const a of flagged.docs) {
+    if (CONGRES.includes(a.slug as string)) continue
+    await payload.update({ collection: 'articles', id: a.id, data: { congres: false }, ...ctx })
+  }
+  for (const slug of CONGRES) {
+    const a = (await payload.find({ collection: 'articles', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
+    if (!a) { console.warn(`Congrès : article introuvable (${slug})`); continue }
+    if (!a.congres) await payload.update({ collection: 'articles', id: a.id, data: { congres: true }, ...ctx })
+    console.log(`→ Congrès : ${a.title}`)
+  }
 
   if (images.length) {
     const ids: number[] = []

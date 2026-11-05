@@ -15,7 +15,7 @@ export async function CongresView({ page }: { page: number }) {
       </p>
       <header className="page-head">
         <h1>Congrès</h1>
-        <p>Congrès fondateur, 1er et 2ème congrès, textes adoptés, programme et statuts, saluts des partis frères : tous les articles liés aux congrès.</p>
+        <p>Congrès fondateur, 1er et 2ème congrès : textes adoptés, programme et statuts, saluts des partis frères.</p>
       </header>
       {res.docs.length ? (
         <div className="grid-3">

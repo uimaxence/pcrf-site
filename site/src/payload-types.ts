@@ -185,9 +185,13 @@ export interface Article {
   rubrique: number | Rubrique;
   date: string;
   /**
-   * Cocher pour afficher l’article en haut de la page d’accueil.
+   * Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents.
    */
   featured?: boolean | null;
+  /**
+   * Cocher pour afficher l’article sur la page Congrès.
+   */
+  congres?: boolean | null;
   /**
    * Décocher pour masquer l’article sans le supprimer.
    */
@@ -457,6 +461,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   rubrique?: T;
   date?: T;
   featured?: T;
+  congres?: T;
   visible?: T;
   auteur?: T;
   slug?: T;
