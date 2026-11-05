@@ -223,12 +223,16 @@ a { color: var(--rouge-texte); }
 /* ---------- Accueil ---------- */
 .une { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 32px; }
 .une__side { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; border-left: 1px solid var(--gris-ligne); padding-left: 24px; }
-/* À la une, grand écran : les articles de droite se partagent toute la hauteur du grand article (pas de vide entre eux). */
+/* À la une, grand écran : à droite, image en haut et texte dessous ; le grand article s'étire pour finir à la même hauteur (pas de vide). */
 @media (min-width: 961px) {
-  .une__side .card--row { flex: 1 1 0; align-items: stretch; }
-  .une__side .card--row .card__media { position: relative; flex-basis: 46%; aspect-ratio: auto; min-height: 130px; }
-  .une__side .card--row .card__media:not(.card__media--empty) img { position: absolute; inset: 0; }
-  .une__side .card--row .card__body { justify-content: center; }
+  .une { grid-template-columns: minmax(0, 5fr) minmax(0, 2fr); }
+  .une .card--lead .card__media { position: relative; flex: 1 1 auto; }
+  .une .card--lead .card__media:not(.card__media--empty) img { position: absolute; inset: 0; }
+  .une__side { justify-content: flex-start; gap: 24px; }
+  .une__side .card--row { flex-direction: column; gap: 10px; }
+  .une__side .card--row .card__media { flex: none; width: 100%; aspect-ratio: 2 / 1; }
+  .une__side .card--row .card__title { font-size: 18px; -webkit-line-clamp: 3; }
+  .une__side .card--row .card__title--long { font-size: 16px; }
 }
 
 /* Fenêtres fixes : même squelette pour les trois, pied calé en bas. */
