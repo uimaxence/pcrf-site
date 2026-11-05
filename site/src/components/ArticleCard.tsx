@@ -6,7 +6,7 @@ import { rubriqueHref } from '@/lib/links'
 import { getSite } from '@/lib/queries'
 import { youtubeId, youtubeThumb } from '@/lib/youtube'
 
-type Props = { article: Partial<Article> & Pick<Article, 'title' | 'slug'>; variant?: 'card' | 'lead' | 'row' | 'compact' }
+type Props = { article: Partial<Article> & Pick<Article, 'title' | 'slug'>; variant?: 'card' | 'lead' | 'row' | 'compact'; tall?: boolean }
 
 /** Au-delà de cette longueur, le titre est composé un cran plus petit (puis coupé par le CSS). */
 const LONG_TITLE = 90
@@ -21,7 +21,7 @@ export function articleImage(article: Partial<Article>, size: 'thumbnail' | 'car
 
 const POSITIONS: Record<string, string> = { top: 'center top', bottom: 'center bottom', left: 'left center', right: 'right center' }
 
-export async function ArticleCard({ article, variant = 'card' }: Props) {
+export async function ArticleCard({ article, variant = 'card', tall = false }: Props) {
   const img = articleImage(article, variant === 'lead' ? 'large' : variant === 'compact' ? 'thumbnail' : 'card')
   const logo = img ? null : mediaUrl((await getSite()).logo, 'card')
   const objectPosition = article.coverPosition ? POSITIONS[article.coverPosition] : undefined
@@ -31,7 +31,7 @@ export async function ArticleCard({ article, variant = 'card' }: Props) {
   const titleClass = `card__title${title.length > LONG_TITLE ? ' card__title--long' : ''}`
   const showChapo = (variant === 'card' || variant === 'lead') && !!article.chapo
   return (
-    <article className={`card card--${variant}`}>
+    <article className={`card card--${variant}${tall ? ' card--tall' : ''}${article.coverFit === 'contain' ? ' card--contain' : ''}`}>
       {img ? (
         <Link className="card__media" href={href} tabIndex={-1} aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}

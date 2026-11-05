@@ -146,9 +146,13 @@ export interface Article {
   chapo?: string | null;
   cover?: (number | null) | Media;
   /**
-   * Dans les listes, l’image est recadrée en rectangle. Choisir la partie à garder visible. Vérifier le résultat avec le bouton « Aperçu » avant de publier.
+   * Quand l’image est recadrée dans les listes, choisir la partie à garder visible. Vérifier le résultat avec le bouton « Aperçu » avant de publier.
    */
   coverPosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | null;
+  /**
+   * Choisir « Image entière » pour un logo, une affiche ou une capture d’écran qu’il ne faut pas couper.
+   */
+  coverFit?: ('cover' | 'contain') | null;
   content?: {
     root: {
       type: string;
@@ -216,8 +220,6 @@ export interface Media {
   alt?: string | null;
   caption?: string | null;
   legacyPath?: string | null;
-  prefix?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -442,6 +444,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   chapo?: T;
   cover?: T;
   coverPosition?: T;
+  coverFit?: T;
   content?: T;
   documents?:
     | T
@@ -476,8 +479,6 @@ export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
   legacyPath?: T;
-  prefix?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -638,6 +639,15 @@ export interface Site {
   logo?: (number | null) | Media;
   bannerEnabled?: boolean | null;
   bannerImage?: (number | null) | Media;
+  /**
+   * Petites images qui se succèdent à droite du nom du parti (ordinateur et tablette). Format paysage conseillé. Laisser vide pour ne rien afficher.
+   */
+  mastheadImages?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   facebook?: string | null;
   instagram?: string | null;
   youtube?: string | null;
@@ -760,6 +770,12 @@ export interface SiteSelect<T extends boolean = true> {
   logo?: T;
   bannerEnabled?: T;
   bannerImage?: T;
+  mastheadImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   facebook?: T;
   instagram?: T;
   youtube?: T;

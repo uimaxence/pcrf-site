@@ -4,6 +4,7 @@ import { resolveLink } from '@/lib/links'
 import { mediaUrl } from '@/lib/media'
 import { MobileMenu, type MenuItem } from './MobileMenu'
 import { SearchForm } from './SearchForm'
+import { MastheadSlides } from './MastheadSlides'
 import { SocialLinks } from './SocialLinks'
 
 function toItems(items: Navigation['primary']): MenuItem[] {
@@ -39,6 +40,7 @@ function NavRow({ items, className }: { items: Navigation['primary']; className:
 
 export function Header({ site, nav }: { site: Site; nav: Navigation }) {
   const logo = mediaUrl(site.logo, 'original')
+  const slides = (site.mastheadImages ?? []).map((m) => mediaUrl(m.image, 'card')).filter((u): u is string => !!u)
   return (
     <header className="site-header">
       <div className="topbar">
@@ -80,6 +82,7 @@ export function Header({ site, nav }: { site: Site; nav: Navigation }) {
           <p className="masthead__name">{site.name}</p>
           {site.slogan && <p className="masthead__slogan">{site.slogan}</p>}
         </div>
+        <MastheadSlides images={slides} />
       </div>
       <NavRow items={[{ label: 'Accueil', type: 'url', url: '/' }, ...(nav.primary ?? [])]} className="nav--primary" />
       <NavRow items={nav.secondary} className="nav--secondary" />

@@ -43,7 +43,21 @@ export const Articles: CollectionConfig = {
       ],
       admin: {
         description:
-          'Dans les listes, l’image est recadrée en rectangle. Choisir la partie à garder visible. Vérifier le résultat avec le bouton « Aperçu » avant de publier.',
+          'Quand l’image est recadrée dans les listes, choisir la partie à garder visible. Vérifier le résultat avec le bouton « Aperçu » avant de publier.',
+        condition: (data) => Boolean(data?.cover),
+      },
+    },
+    {
+      name: 'coverFit',
+      type: 'select',
+      label: 'Affichage de l’image dans les listes',
+      defaultValue: 'cover',
+      options: [
+        { label: 'Remplir le cadre (l’image est recadrée)', value: 'cover' },
+        { label: 'Image entière, sans recadrage (logo, affiche, capture)', value: 'contain' },
+      ],
+      admin: {
+        description: 'Choisir « Image entière » pour un logo, une affiche ou une capture d’écran qu’il ne faut pas couper.',
         condition: (data) => Boolean(data?.cover),
       },
     },

@@ -22,6 +22,7 @@
     "cleanup:drafts": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/delete-empty-drafts.ts",
     "screenshots": "node scripts/screenshot.mjs",
     "export:contenu": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/export.ts",
+    "retours:novembre": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/retours-novembre.ts",
     "programme": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/programme.ts"
   },
   "dependencies": {

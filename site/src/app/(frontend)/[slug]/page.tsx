@@ -125,7 +125,7 @@ export default async function SlugPage({ params }: Params) {
           <YouTube url={a.videoUrl} title={a.title} />
         ) : (
           coverUrl && (
-            <figure className="article__cover">
+            <figure className={`article__cover${chain.some((r) => r.slug === 'campagnes') ? ' article__cover--campagne' : ''}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={coverUrl} alt={mediaAlt(a.cover)} />
               {cover?.caption && <figcaption>{cover.caption}</figcaption>}

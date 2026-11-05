@@ -12,6 +12,7 @@ export const ARTICLE_LIST_SELECT = {
   videoUrl: true,
   featured: true,
   coverPosition: true,
+  coverFit: true,
 } as const
 
 /** Filtre commun : écarte les articles masqués (case « Visible sur le site » décochée). */

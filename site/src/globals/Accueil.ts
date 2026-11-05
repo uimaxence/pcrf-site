@@ -63,7 +63,7 @@ export const Accueil: GlobalConfig = {
         {
           label: 'Listes',
           fields: [
-            { name: 'featuredCount', type: 'number', label: 'Articles à la une (1 grand + les autres en colonne)', defaultValue: 5, min: 2, max: 7 },
+            { name: 'featuredCount', type: 'number', label: 'Articles à la une (1 grand + les autres en colonne)', defaultValue: 4, min: 2, max: 7 },
             { name: 'latestCount', type: 'number', label: 'Derniers articles', defaultValue: 6, min: 3, max: 12 },
             {
               name: 'rubriqueBlocks',

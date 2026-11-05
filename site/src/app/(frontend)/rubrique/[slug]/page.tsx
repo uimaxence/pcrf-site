@@ -31,6 +31,9 @@ export default async function RubriquePage({ params, searchParams }: Props) {
   const site = rubrique.slug === 'videos' ? await getSite() : null
   const youtube = site?.youtube
   const parent = rubrique.parent && typeof rubrique.parent === 'object' ? rubrique.parent : null
+  // Matériel et ses sous-rubriques (affiches, tracts, brochures) : visuels en hauteur, comme les documents eux-mêmes.
+  const tall = rubrique.slug === 'materiel' || parent?.slug === 'materiel'
+  const gridClass = tall ? 'grid-3 grid--tall' : 'grid-3'
 
   return (
     <div className="wrap">
@@ -68,16 +71,16 @@ export default async function RubriquePage({ params, searchParams }: Props) {
           <SectionTitle>À la une</SectionTitle>
           <div className="grid-3">
             {direct.map((a) => (
-              <ArticleCard key={a.id} article={a} />
+              <ArticleCard key={a.id} article={a} tall={tall} />
             ))}
           </div>
         </section>
       )}
       {direct.length > 0 && res.docs.length > 0 && <SectionTitle>{children.map((c) => c.name).join(' et ')}</SectionTitle>}
       {res.docs.length ? (
-        <div className="grid-3">
+        <div className={gridClass}>
           {res.docs.map((a) => (
-            <ArticleCard key={a.id} article={a} />
+            <ArticleCard key={a.id} article={a} tall={tall} />
           ))}
         </div>
       ) : (

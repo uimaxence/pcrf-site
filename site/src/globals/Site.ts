@@ -22,6 +22,14 @@ export const Site: GlobalConfig = {
             { name: 'logo', type: 'upload', relationTo: 'media', label: 'Logo' },
             { name: 'bannerEnabled', type: 'checkbox', label: 'Afficher le bandeau photo en haut de l’accueil', defaultValue: true },
             { name: 'bannerImage', type: 'upload', relationTo: 'media', label: 'Image du bandeau' },
+            {
+              name: 'mastheadImages',
+              type: 'array',
+              label: 'Images défilantes à droite de l’en-tête',
+              labels: { singular: 'Image', plural: 'Images' },
+              admin: { description: 'Petites images qui se succèdent à droite du nom du parti (ordinateur et tablette). Format paysage conseillé. Laisser vide pour ne rien afficher.' },
+              fields: [{ name: 'image', type: 'upload', relationTo: 'media', label: 'Image', required: true, filterOptions: { mimeType: { contains: 'image' } } }],
+            },
           ],
         },
         {

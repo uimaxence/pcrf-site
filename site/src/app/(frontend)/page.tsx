@@ -38,11 +38,6 @@ export default async function HomePage() {
         <div className="bandeau">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={banner} alt="" />
-          {site.slogan && (
-            <p className="bandeau__slogan">
-              <span>« {site.slogan} »</span>
-            </p>
-          )}
         </div>
       )}
       <div className="wrap">
