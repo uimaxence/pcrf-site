@@ -223,6 +223,13 @@ a { color: var(--rouge-texte); }
 /* ---------- Accueil ---------- */
 .une { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 32px; }
 .une__side { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; border-left: 1px solid var(--gris-ligne); padding-left: 24px; }
+/* À la une, grand écran : les articles de droite se partagent toute la hauteur du grand article (pas de vide entre eux). */
+@media (min-width: 961px) {
+  .une__side .card--row { flex: 1 1 0; align-items: stretch; }
+  .une__side .card--row .card__media { position: relative; flex-basis: 46%; aspect-ratio: auto; min-height: 130px; }
+  .une__side .card--row .card__media:not(.card__media--empty) img { position: absolute; inset: 0; }
+  .une__side .card--row .card__body { justify-content: center; }
+}
 
 /* Fenêtres fixes : même squelette pour les trois, pied calé en bas. */
 .windows { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin: 44px 0 0; }
