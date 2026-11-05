@@ -19,6 +19,11 @@ export const Media: CollectionConfig = {
     mimeTypes: ['image/*', 'application/pdf'],
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Fichiers publics : le CDN les garde un jour, le navigateur une heure. Sans cela chaque image relance une fonction serveur.
+    modifyResponseHeaders: ({ headers }) => {
+      headers.set('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800')
+      return headers
+    },
     imageSizes: [
       { name: 'thumbnail', width: 400, withoutEnlargement: true },
       { name: 'card', width: 800, withoutEnlargement: true },

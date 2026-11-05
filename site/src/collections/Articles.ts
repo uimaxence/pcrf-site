@@ -102,7 +102,7 @@ export const Articles: CollectionConfig = {
       type: 'checkbox',
       label: 'À la une',
       defaultValue: false,
-      admin: { position: 'sidebar', description: 'Cocher pour afficher l’article en haut de la page d’accueil.' },
+      admin: { position: 'sidebar', description: 'Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents.' },
       index: true,
     },
     {

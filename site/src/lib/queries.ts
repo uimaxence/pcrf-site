@@ -86,10 +86,10 @@ export async function getFeaturedArticles(limit = 3) {
     depth: 1,
     select: ARTICLE_LIST_SELECT,
   })
-  // Des articles sont cochés « à la une » : on n'affiche qu'eux.
-  if (featured.docs.length > 0) return featured.docs
-  // Aucun article coché : on affiche les plus récents.
-  return (await getLatestArticles(limit)).docs
+  if (featured.docs.length >= limit) return featured.docs
+  // Moins d'articles cochés que de places : les cochés passent en premier, les plus récents complètent (jamais de colonne vide).
+  const fill = await getLatestArticles(limit - featured.docs.length, featured.docs.map((a) => a.id))
+  return [...featured.docs, ...fill.docs]
 }
 
 export async function getArticlesByRubrique(rubrique: Rubrique, page = 1, limit = 12) {

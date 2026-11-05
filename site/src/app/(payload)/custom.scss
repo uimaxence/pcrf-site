@@ -1,0 +1,35 @@
+// Administration aux couleurs du parti : liseré rouge et logo sur les pages de connexion, emblème dans le menu.
+.template-minimal {
+  border-top: 6px solid #e2141b;
+}
+.login__brand {
+  margin-bottom: 28px;
+}
+.pcrf-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  text-align: center;
+
+  img {
+    width: 250px;
+    max-width: 80%;
+    height: auto;
+  }
+  p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--theme-elevation-500);
+  }
+}
+.pcrf-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}

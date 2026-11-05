@@ -44,7 +44,14 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: ' · PCRF' },
+    meta: {
+      titleSuffix: ' · PCRF',
+      icons: [
+        { rel: 'icon', type: 'image/png', url: '/icon.png' },
+        { rel: 'apple-touch-icon', url: '/apple-icon.png' },
+      ],
+    },
+    components: { graphics: { Logo: '/components/admin/Logo#Logo', Icon: '/components/admin/Icon#Icon' } },
     dateFormat: 'dd/MM/yyyy HH:mm',
   },
   i18n: { supportedLanguages: { fr }, fallbackLanguage: 'fr' },

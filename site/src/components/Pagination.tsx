@@ -2,7 +2,8 @@ import Link from 'next/link'
 
 export function Pagination({ page, totalPages, base }: { page: number; totalPages: number; base: string }) {
   if (totalPages <= 1) return null
-  const href = (p: number) => (p === 1 ? base : `${base}${base.includes('?') ? '&' : '?'}page=${p}`)
+  // Rubriques : /rubrique/x/page/2 (pages statiques). Recherche (adresse avec « ? ») : &page=2.
+  const href = (p: number) => (p === 1 ? base : base.includes('?') ? `${base}&page=${p}` : `${base}/page/${p}`)
   return (
     <nav className="pagination" aria-label="Pagination">
       {page > 1 ? (

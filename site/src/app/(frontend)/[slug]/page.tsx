@@ -13,6 +13,10 @@ import { getArticleBySlug, getArticlesByRubrique, getPageBySlug, getRubriqueByLe
 
 export const revalidate = 300
 export const dynamicParams = true
+/** Aucune page construite d'avance : chacune est générée à la première visite puis gardée en cache (purgé à chaque modification). */
+export function generateStaticParams() {
+  return []
+}
 
 type Params = { params: Promise<{ slug: string }> }
 

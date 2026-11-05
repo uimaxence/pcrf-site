@@ -18,6 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
     description: site.description || undefined,
     openGraph: { siteName: site.name, locale: 'fr_FR', type: 'website' },
     alternates: { types: { 'application/rss+xml': '/rss.xml' } },
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/icon.png', type: 'image/png', sizes: '192x192' },
+      ],
+      apple: '/apple-icon.png',
+    },
   }
 }
 
