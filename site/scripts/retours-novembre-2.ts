@@ -1,6 +1,6 @@
 /**
  * Retours du 6 novembre : texte de la lettre d'info, « (Italie) » sur la page Liens,
- * page de publicité « Brochures du PCRF » rangée dans Matériel › Brochures,
+ * page de publicité « Brochures du PCRF » et brochures de Théorie et d'International rangées dans Matériel › Brochures,
  * visuels en hauteur pour deux affiches et le livret d'accueil.
  *
  *   pnpm retours:novembre2
@@ -21,6 +21,17 @@ const ctx = { get context() { return { skipRevalidate: true } } }
 
 const OLD_NEWSLETTER = 'Une à deux fois par semaine, nos articles et appels dans votre boîte mail. Désinscription en un clic.'
 const NEW_NEWSLETTER = 'Deux fois par mois, nos articles et appels dans votre boîte mail. Désinscription en un clic.'
+
+/** Articles à ranger dans Matériel › Brochures. `from` : rubrique d'origine ; s'ils en sont déjà sortis, on ne touche à rien. */
+const BROCHURES = [
+  { slug: 'Brochures-du-PCRF', from: 'theorie' }, // la page de publicité des brochures
+  { slug: 'Brochure-Conference-sur-les-80-ans', from: 'theorie' },
+  { slug: 'Brochure-sur-la-fin-de-l-URSS', from: 'theorie' },
+  { slug: 'Brochure-sur-les-succes-du', from: 'theorie' },
+  { slug: 'Environnement-brochure-d-analyse', from: 'theorie' },
+  { slug: 'Brochure-de-contributions-KKE-PTC', from: 'international' },
+  { slug: 'Contre-la-Francafrique-Brochure', from: 'international' },
+]
 
 /** Article → nouveau visuel en hauteur. `from` : nom du visuel d'origine ; s'il a déjà été changé, on ne touche à rien. */
 const COVERS = [
@@ -53,17 +64,16 @@ async function main() {
     console.log(liens ? 'Liens : déjà à jour' : 'Liens : article introuvable')
   }
 
-  // 3. La page de publicité des brochures quitte Théorie pour Matériel › Brochures.
+  // 3. La page de publicité des brochures et les brochures rangées ailleurs rejoignent Matériel › Brochures.
   const rubrique = async (slug: string) => (await payload.find({ collection: 'rubriques', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
-  const [brochures, theorie] = await Promise.all([rubrique('brochures'), rubrique('theorie')])
-  const pub = await bySlug('Brochures-du-PCRF')
-  if (!brochures || !pub) {
-    console.warn('Brochures : rubrique ou article introuvable')
-  } else if (theorie && pub.rubrique === theorie.id) {
-    await payload.update({ collection: 'articles', id: pub.id, data: { rubrique: brochures.id }, ...ctx })
-    console.log(`→ Brochures : ${pub.title}`)
-  } else {
-    console.log('Brochures : « Brochures du PCRF » déjà rangé')
+  const brochures = await rubrique('brochures')
+  if (!brochures) console.warn('Brochures : rubrique introuvable')
+  for (const b of brochures ? BROCHURES : []) {
+    const [a, from] = await Promise.all([bySlug(b.slug), rubrique(b.from)])
+    if (!a) { console.warn(`Brochures : article introuvable (${b.slug})`); continue }
+    if (!from || a.rubrique !== from.id) { console.log(`Brochures : ${a.title} laissé tel quel`); continue }
+    await payload.update({ collection: 'articles', id: a.id, data: { rubrique: brochures.id }, ...ctx })
+    console.log(`→ Brochures : ${a.title}`)
   }
 
   // 4. Visuels en hauteur.

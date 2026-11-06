@@ -155,6 +155,9 @@ export async function searchArticles(q: string, page = 1, limit = 20) {
   })
 }
 
+/** Nombre maximal d'articles « en propre » lus pour une rubrique qui a des sous-rubriques. */
+export const DIRECT_LIMIT = 50
+
 /** Articles directement rattachés à une rubrique (sans ses sous-rubriques). */
 export async function getDirectArticles(rubrique: Rubrique) {
   const payload = await getPayloadClient()
@@ -162,7 +165,7 @@ export async function getDirectArticles(rubrique: Rubrique) {
     collection: 'articles',
     where: { and: [VISIBLE, { rubrique: { equals: rubrique.id } }] },
     sort: '-date',
-    limit: 50,
+    limit: DIRECT_LIMIT,
     depth: 1,
     select: ARTICLE_LIST_SELECT,
   })

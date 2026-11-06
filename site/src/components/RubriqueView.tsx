@@ -5,7 +5,7 @@ import { ArticleCard } from '@/components/ArticleCard'
 import { Pagination } from '@/components/Pagination'
 import { rubriqueHref } from '@/lib/links'
 import { SectionTitle } from '@/components/SectionTitle'
-import { getArticlesByRubrique, getDirectArticles, getFamilyArticlesExcluding, getRubriqueBySlug, getRubriques, getSite } from '@/lib/queries'
+import { DIRECT_LIMIT, getArticlesByRubrique, getDirectArticles, getFamilyArticlesExcluding, getRubriqueBySlug, getRubriques, getSite } from '@/lib/queries'
 
 /** Titre, description et adresse canonique d'une page de rubrique. */
 export async function rubriqueMetadata(slug: string, page = 1): Promise<Metadata> {
@@ -25,16 +25,28 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
   if (!rubrique) notFound()
   const all = await getRubriques()
   const children = all.filter((r) => (typeof r.parent === 'object' && r.parent ? r.parent.id : r.parent) === rubrique.id)
-  // Rubrique avec sous-rubriques (ex. Matériel) : ses propres articles passent d'abord, au-dessus des tracts et affiches.
-  const direct = children.length ? await getDirectArticles(rubrique) : []
-  const res = direct.length ? await getFamilyArticlesExcluding(rubrique, direct.map((d) => d.id), page, 12) : await getArticlesByRubrique(rubrique, page, 12)
-  if (page > 1 && page > res.totalPages) notFound()
-  const site = rubrique.slug === 'videos' ? await getSite() : null
-  const youtube = site?.youtube
   const parent = rubrique.parent && typeof rubrique.parent === 'object' ? rubrique.parent : null
   // Matériel et ses sous-rubriques (affiches, tracts, brochures) : visuels en hauteur, comme les documents eux-mêmes.
   const tall = rubrique.slug === 'materiel' || parent?.slug === 'materiel'
   const gridClass = tall ? 'grid-3 grid--tall' : 'grid-3'
+  // Rubrique avec sous-rubriques (ex. Matériel) : ses propres articles passent d'abord, « à la une ».
+  const direct = children.length ? await getDirectArticles(rubrique) : []
+  // Rubrique « vitrine » : tous ses articles en propre tiennent à la une, le reste est dans les sous-rubriques.
+  // Elle montre alors une ligne par sous-rubrique, chacune renvoyant à sa liste complète, et n'a qu'une seule page.
+  const hub = children.length > 0 && direct.length < DIRECT_LIMIT
+  if (hub && page > 1) notFound()
+  const perRow = tall ? 4 : 3
+  const sections = hub
+    ? (await Promise.all(children.map(async (c) => ({ rubrique: c, res: await getArticlesByRubrique(c, 1, perRow) })))).filter((s) => s.res.docs.length > 0)
+    : []
+  const res = hub
+    ? null
+    : direct.length
+      ? await getFamilyArticlesExcluding(rubrique, direct.map((d) => d.id), page, 12)
+      : await getArticlesByRubrique(rubrique, page, 12)
+  if (res && page > 1 && page > res.totalPages) notFound()
+  const site = rubrique.slug === 'videos' ? await getSite() : null
+  const youtube = site?.youtube
 
   return (
     <div className="wrap">
@@ -77,17 +89,34 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
           </div>
         </section>
       )}
-      {direct.length > 0 && res.docs.length > 0 && <SectionTitle>{children.map((c) => c.name).join(' et ')}</SectionTitle>}
-      {res.docs.length ? (
-        <div className={gridClass}>
-          {res.docs.map((a) => (
-            <ArticleCard key={a.id} article={a} tall={tall} />
-          ))}
-        </div>
-      ) : (
-        <p className="empty">Aucun article dans cette rubrique pour le moment.</p>
+      {sections.map((s) => (
+        <section key={s.rubrique.id}>
+          <SectionTitle href={rubriqueHref(s.rubrique)} hint={`Tout voir (${s.res.totalDocs})`}>
+            {s.rubrique.name}
+          </SectionTitle>
+          <div className={gridClass}>
+            {s.res.docs.map((a) => (
+              <ArticleCard key={a.id} article={a} tall={tall} />
+            ))}
+          </div>
+        </section>
+      ))}
+      {hub && sections.length === 0 && direct.length === 0 && <p className="empty">Aucun article dans cette rubrique pour le moment.</p>}
+      {res && (
+        <>
+          {direct.length > 0 && res.docs.length > 0 && <SectionTitle>{children.map((c) => c.name).join(' et ')}</SectionTitle>}
+          {res.docs.length ? (
+            <div className={gridClass}>
+              {res.docs.map((a) => (
+                <ArticleCard key={a.id} article={a} tall={tall} />
+              ))}
+            </div>
+          ) : (
+            <p className="empty">Aucun article dans cette rubrique pour le moment.</p>
+          )}
+          <Pagination page={res.page ?? 1} totalPages={res.totalPages} base={rubriqueHref(rubrique)} />
+        </>
       )}
-      <Pagination page={res.page ?? 1} totalPages={res.totalPages} base={rubriqueHref(rubrique)} />
     </div>
   )
 }
