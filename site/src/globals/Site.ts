@@ -25,9 +25,9 @@ export const Site: GlobalConfig = {
             {
               name: 'mastheadImages',
               type: 'array',
-              label: 'Images défilantes à droite de l’en-tête',
+              label: 'Images défilantes incrustées dans le bandeau',
               labels: { singular: 'Image', plural: 'Images' },
-              admin: { description: 'Petites images qui se succèdent à droite du nom du parti (ordinateur et tablette). Format paysage conseillé. Laisser vide pour ne rien afficher.' },
+              admin: { description: 'Petites images qui se succèdent dans un cadre, à droite du bandeau photo de l’accueil. Format paysage conseillé. Laisser vide pour ne rien afficher.' },
               fields: [{ name: 'image', type: 'upload', relationTo: 'media', label: 'Image', required: true, filterOptions: { mimeType: { contains: 'image' } } }],
             },
           ],
@@ -46,7 +46,7 @@ export const Site: GlobalConfig = {
           label: 'Lettre d’information',
           fields: [
             { name: 'newsletterTitle', type: 'text', label: 'Titre du bloc', defaultValue: 'Recevez nos analyses et nos rendez-vous' },
-            { name: 'newsletterText', type: 'textarea', label: 'Texte', defaultValue: 'Une à deux fois par semaine, nos articles et appels dans votre boîte mail. Désinscription en un clic.' },
+            { name: 'newsletterText', type: 'textarea', label: 'Texte', defaultValue: 'Deux fois par mois, nos articles et appels dans votre boîte mail. Désinscription en un clic.' },
             { name: 'brevoFormUrl', type: 'text', label: 'Adresse du formulaire Brevo', admin: { description: 'Lien « formulaire hébergé » de Brevo. Le bouton du site y renvoie.' } },
           ],
         },

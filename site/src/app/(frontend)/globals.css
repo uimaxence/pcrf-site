@@ -87,11 +87,6 @@ a { color: var(--rouge-texte); }
 .masthead__name { margin: 0; font: 400 clamp(26px, 3.6vw, 46px)/0.95 var(--ff-display); letter-spacing: 0.04em; text-transform: uppercase; color: var(--rouge); }
 .masthead__text { min-width: 0; }
 .masthead__slogan { margin: 8px 0 0; font-size: clamp(15px, 1.5vw, 19px); font-style: italic; font-weight: 600; letter-spacing: 0.01em; color: #0a0a0a; }
-/* Images défilantes à droite : cadre fixe, fondu enchaîné. */
-.masthead__slides { position: relative; margin-left: auto; flex: 0 0 clamp(220px, 26vw, 330px); height: 128px; overflow: hidden; background: var(--gris-papier); border-bottom: 4px solid var(--rouge); }
-.masthead__slides img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.1s ease; }
-.masthead__slides img.is-on { opacity: 1; }
-.masthead__slides img:only-child { opacity: 1; }
 
 .nav__list { display: flex; list-style: none; margin: 0 auto; padding: 0 var(--gutter); overflow-x: auto; scrollbar-width: none; }
 .nav__list::-webkit-scrollbar { display: none; }
@@ -161,8 +156,15 @@ a { color: var(--rouge-texte); }
 
 /* ---------- Bandeau photo ---------- */
 .bandeau { position: relative; height: clamp(170px, 26vw, 320px); overflow: hidden; background: #ddd; }
-.bandeau img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; filter: grayscale(1) contrast(1.05); display: block; }
+.bandeau > img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; filter: grayscale(1) contrast(1.05); display: block; }
 .bandeau::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.92) 100%); }
+/* Images défilantes incrustées à droite du bandeau, alignées sur la marge du contenu : cadre blanc, photos en couleur, fondu enchaîné. */
+.bandeau__slides {
+  position: absolute; z-index: 1; top: 46%; right: max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter))); transform: translateY(-50%);
+  height: 64%; aspect-ratio: 3 / 2; overflow: hidden; background: var(--gris-papier); border: 4px solid #fff; box-shadow: 0 8px 26px rgba(0, 0, 0, 0.4);
+}
+.bandeau__slides img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.1s ease; }
+.bandeau__slides img.is-on, .bandeau__slides img:only-child { opacity: 1; }
 
 /* ---------- Tranche : titre de section ---------- */
 .tranche { display: flex; align-items: stretch; justify-content: space-between; gap: 16px; margin: 44px 0 22px; border-bottom: 3px solid var(--noir); }
@@ -182,8 +184,8 @@ a { color: var(--rouge-texte); }
 .card:hover .card__media img, .card:focus-within .card__media img { filter: none; transform: scale(1.02); }
 /* Image entière (logo, affiche, capture) : jamais coupée, sur fond de papier. */
 .card--contain .card__media img { object-fit: contain; object-position: center !important; padding: 6px; }
-/* Matériel : visuel en hauteur (tracts, affiches, livrets). */
-.card--tall .card__media { aspect-ratio: 3 / 4; }
+/* Matériel : visuel en hauteur, au format A4, pour que tracts, livrets et brochures s'affichent en entier. */
+.card--tall .card__media { aspect-ratio: 210 / 297; }
 .card--tall.card--contain .card__media img { padding: 0; }
 .card__media--empty { display: grid; place-items: center; background: var(--gris-papier); color: var(--rouge); font: 400 40px var(--ff-display); letter-spacing: 0.1em; }
 .card__media--empty img { width: 62%; height: 78%; object-fit: contain; filter: none; }
@@ -372,7 +374,6 @@ a { color: var(--rouge-texte); }
   .burger { display: inline-flex; }
   .topbar__social, .topbar__search, .nav--desktop { display: none; }
   .masthead { padding-top: 14px; padding-bottom: 14px; }
-  .masthead__slides { flex-basis: 200px; height: 96px; }
 }
 @media (max-width: 960px) {
   .une, .windows, .rubblocks { grid-template-columns: 1fr; }
@@ -398,7 +399,7 @@ a { color: var(--rouge-texte); }
   .masthead { gap: 14px; padding: 12px var(--gutter); }
   .masthead__logo img { height: 84px; }
   .masthead__slogan { display: none; }
-  .masthead__slides { display: none; }
+  .bandeau__slides { height: 58%; border-width: 3px; }
   .topbar__in { gap: 8px; }
   .search--compact input { width: 120px; }
   .topbar .btn--ghost { display: none; }

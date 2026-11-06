@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Rubrique } from '@/payload-types'
 import { ArticleCard } from '@/components/ArticleCard'
+import { BandeauSlides } from '@/components/BandeauSlides'
 import { FixedWindows } from '@/components/FixedWindows'
 import { Newsletter } from '@/components/Newsletter'
 import { SectionTitle } from '@/components/SectionTitle'
@@ -31,6 +32,7 @@ export default async function HomePage() {
   const blocks = (accueil.rubriqueBlocks ?? []).filter((r): r is Rubrique => typeof r === 'object')
   const blockData = await Promise.all(blocks.map(async (r) => ({ r, docs: (await getArticlesByRubrique(r, 1, 4)).docs })))
   const banner = site.bannerEnabled ? mediaUrl(site.bannerImage, 'large') : null
+  const slides = (site.mastheadImages ?? []).map((m) => mediaUrl(m.image, 'card')).filter((u): u is string => !!u)
 
   return (
     <>
@@ -38,6 +40,7 @@ export default async function HomePage() {
         <div className="bandeau">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={banner} alt="" />
+          <BandeauSlides images={slides} />
         </div>
       )}
       <div className="wrap">

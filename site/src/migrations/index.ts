@@ -4,6 +4,7 @@ import * as migration_20261102_094416_ajout_prefix_s3 from './20261102_094416_aj
 import * as migration_20261102_153505_ajout_visibilite_cadrage from './20261102_153505_ajout_visibilite_cadrage';
 import * as migration_20261105_083747_ajout_cover_fit_masthead from './20261105_083747_ajout_cover_fit_masthead';
 import * as migration_20261105_172002_page_congres from './20261105_172002_page_congres';
+import * as migration_20261106_092829_texte_lettre_info from './20261106_092829_texte_lettre_info';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261105_172002_page_congres.up,
     down: migration_20261105_172002_page_congres.down,
-    name: '20261105_172002_page_congres'
+    name: '20261105_172002_page_congres',
+  },
+  {
+    up: migration_20261106_092829_texte_lettre_info.up,
+    down: migration_20261106_092829_texte_lettre_info.down,
+    name: '20261106_092829_texte_lettre_info'
   },
 ];

@@ -12,7 +12,9 @@ import { getPayload } from 'payload'
 import config from '../src/payload.config'
 
 const images = process.argv.slice(2)
-const ctx = { context: { skipRevalidate: true } }
+// Un contexte neuf à chaque appel : après un envoi de fichier, le plugin de stockage laisse un drapeau dans l'objet reçu,
+// et un objet partagé bloque alors en silence tous les envois suivants (fiche créée, fichier absent du stockage).
+const ctx = { get context() { return { skipRevalidate: true } } }
 
 async function main() {
   const payload = await getPayload({ config })

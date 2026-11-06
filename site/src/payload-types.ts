@@ -645,7 +645,7 @@ export interface Site {
   bannerEnabled?: boolean | null;
   bannerImage?: (number | null) | Media;
   /**
-   * Petites images qui se succèdent à droite du nom du parti (ordinateur et tablette). Format paysage conseillé. Laisser vide pour ne rien afficher.
+   * Petites images qui se succèdent dans un cadre, à droite du bandeau photo de l’accueil. Format paysage conseillé. Laisser vide pour ne rien afficher.
    */
   mastheadImages?:
     | {

@@ -19,7 +19,9 @@ if (!pdfArg || pageArgs.length < 1 || pageArgs.length > 3) {
   process.exit(1)
 }
 
-const ctx = { context: { skipRevalidate: true } }
+// Un contexte neuf à chaque appel : après un envoi de fichier, le plugin de stockage laisse un drapeau dans l'objet reçu,
+// et un objet partagé bloque alors en silence tous les envois suivants (fiche créée, fichier absent du stockage).
+const ctx = { get context() { return { skipRevalidate: true } } }
 
 async function ensureMedia(payload: Awaited<ReturnType<typeof getPayload>>, file: string, alt: string) {
   const abs = path.resolve(file)

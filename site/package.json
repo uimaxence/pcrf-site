@@ -23,6 +23,7 @@
     "screenshots": "node scripts/screenshot.mjs",
     "export:contenu": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/export.ts",
     "retours:novembre": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/retours-novembre.ts",
+    "retours:novembre2": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/retours-novembre-2.ts",
     "programme": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/programme.ts"
   },
   "dependencies": {
