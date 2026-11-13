@@ -19,7 +19,8 @@ Dans le menu de gauche, cliquez sur **Articles**, puis sur **Créer**.
 | **Texte** | Le corps de l'article. La barre d'outils permet gras, italique, titres, listes, liens et images. |
 | **Documents joints** | Un tract, une affiche ou une brochure en PDF à proposer en téléchargement. |
 | **Vidéo YouTube** | Pour la rubrique Vidéos : collez le lien de la vidéo. |
-| **Rubrique** (à droite) | Obligatoire : France, International, Luttes, Journal, Campagnes, Vidéos, Théorie, Matériel… |
+| **Rubrique** (à droite) | Obligatoire : France, International, Luttes, Journal, Campagnes, Vidéos, Théorie, Matériel (Brochures, Affiches, Tracts, Goodies)… |
+| **Site de la campagne** (à droite) | Pour un article de la rubrique Campagnes : l'adresse du site de la campagne. Dans la liste des campagnes et en tête de l'article, le logo ouvre directement ce site. |
 | **Date de publication** | Proposée automatiquement. Modifiez-la pour antidater ou programmer. |
 | **Mettre à la une** | Cochez pour afficher l'article en grand en haut de l'accueil. |
 
@@ -49,9 +50,23 @@ Dans **Articles**, la case de recherche cherche dans les titres et les chapeaux.
 - **Rédacteur** : écrire, publier et modifier des articles, envoyer des images.
 - **Administrateur** : en plus, gérer les rubriques, les menus, les pages fixes (Qui sommes-nous, Programme, Contact, Don), les réglages du site et les comptes.
 
+## Les photos de l'ancien site (« Portfolio »)
+
+Certains articles importés (manifestations, fêtes de l'Humanité, goodies…) avaient sur l'ancien site une galerie de photos. Elle est reprise à la fin du texte importé, sous le titre « Portfolio » : chaque photo s'ouvre en grand dans un nouvel onglet. Les photos sont dans **Médias**, avec leur ancien chemin dans la barre latérale.
+
+## La page « Nous rejoindre »
+
+Le bouton « Nous rejoindre » (barre du haut, menu noir, pied de page) ouvre un formulaire : nom, mail, ville, téléphone, travail, « comment nous as-tu connus ? » et motivations. Les demandes arrivent à l'adresse indiquée dans **Réglages du site › Réseaux et contact › Adresse mail qui reçoit les demandes « Nous rejoindre »** (sinon à l'adresse de contact). Le texte d'introduction se change dans **Pages › Nous rejoindre**.
+
+## Le mode nuit
+
+Le bouton lune, dans la barre du haut (et dans le menu sur téléphone), passe le site en fond sombre. Le choix est mémorisé par le navigateur de chaque visiteur ; il ne change rien pour les autres.
+
 ## La fenêtre « Programme » de l'accueil
 
 Dans **Page d'accueil › Programme**, un administrateur peut changer le fichier PDF, le titre, le texte et les **pages d'aperçu** : 2 ou 3 images de pages (par exemple la couverture et une page intérieure). Elles s'affichent comme des feuilles posées dans le bloc rouge, qui se soulèvent quand on survole la fenêtre. La première image est devant. Pour obtenir l'image d'une page à partir du PDF : ouvrir le PDF, faire une capture d'écran de la page (ou « Exporter en image » dans Aperçu), puis l'envoyer dans le champ.
+
+La fenêtre « Journal » fonctionne de la même façon : les couvertures des trois derniers numéros de la rubrique Journal (ou du numéro choisi dans **Page d'accueil › Fenêtre Journal**, suivi des précédents) se soulèvent au survol. Il suffit que chaque numéro ait son image principale.
 
 Les réglages du site (bandeau, réseaux sociaux, lettre d'information, HelloAsso, fenêtres de l'accueil) sont dans le menu **Structure** › **Réglages du site** et **Page d'accueil**.
 

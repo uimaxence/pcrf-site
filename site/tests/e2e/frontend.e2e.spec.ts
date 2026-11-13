@@ -48,6 +48,28 @@ test.describe('Site public', () => {
     await expect(page.locator('.form__ok')).toBeVisible({ timeout: 20000 })
   })
 
+  test('le formulaire « Nous rejoindre » accepte une demande', async ({ page }) => {
+    await page.goto(base + '/')
+    await page.locator('.topbar__actions a', { hasText: 'Nous rejoindre' }).click()
+    await expect(page).toHaveURL(/\/nous-rejoindre$/)
+    await page.fill('#j-name', 'Test')
+    await page.fill('#j-email', 'test@example.org')
+    await page.fill('#j-city', 'Paris')
+    await page.fill('#j-why', 'Demande de test automatique.')
+    await page.click('.form button[type="submit"]')
+    await expect(page.locator('.form__ok')).toBeVisible({ timeout: 20000 })
+  })
+
+  test('le mode nuit s’active depuis la barre du haut et survit au rechargement', async ({ page }) => {
+    await page.goto(base + '/')
+    await page.locator('.topbar__theme').click()
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+    await page.reload()
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+    await page.locator('.topbar__theme').click()
+    await expect(page.locator('html')).not.toHaveAttribute('data-theme', 'dark')
+  })
+
   test('la recherche renvoie des résultats', async ({ page }) => {
     await page.goto(base + '/recherche?q=capital')
     await expect(page.locator('.card').first()).toBeVisible()

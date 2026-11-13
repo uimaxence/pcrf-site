@@ -76,6 +76,12 @@ ${congres ? `<p><a href="/Congres-fondateur-du-Parti">Congrès fondateur, 1er Co
 <p>Adresse postale : Amis d’Oulianov, BP 40064, 75862 Paris CEDEX 18</p>
 <p>Abonnement au journal <em>Intervention Communiste</em> : 20 € pour 1 an, 10 € étudiants et privés d’emploi, 9 € e-abonnement, soutien à partir de 30 €. Chèque à l’ordre de « Mandataire PCRF ».</p>`,
   )
+  const rejoindre = await page(
+    'nous-rejoindre',
+    'Nous rejoindre',
+    `<p>Tu partages nos analyses et tu veux agir avec nous ? Remplis ce formulaire : un camarade te recontacte rapidement pour échanger et te proposer de rencontrer les militants près de chez toi.</p>
+<p>Adhérer au PCRF, c’est rejoindre un parti de militants organisés, présents dans les luttes, qui se forment et agissent ensemble pour le socialisme-communisme.</p>`,
+  )
   await page('mentions-legales', 'Mentions légales', `<p>Éditeur : Parti Communiste Révolutionnaire de France. Directeur de la publication : à compléter. Hébergement : à compléter.</p><p>Ce site n’utilise pas de cookies de suivi.</p>`)
 
   // Menus
@@ -95,11 +101,12 @@ ${congres ? `<p><a href="/Congres-fondateur-du-Parti">Congrès fondateur, 1er Co
         theorie ? L('Théorie', 'rubrique', theorie) : null,
         liens ? L('Liens', 'article', liens) : null,
         L('Archives', 'url', null, 'https://archives.pcrf-ic.fr/'),
+        L('Nous rejoindre', 'page', rejoindre),
         L('Contact', 'page', contact),
         L('Don', 'page', don),
       ].filter((l): l is Link => Boolean(l)),
       footerColumns: [
-        { title: 'Le parti', links: [quiSommesNous ? L('Qui sommes-nous ?', 'article', quiSommesNous) : null, L('Programme', 'page', programme), L('Faire un don', 'page', don), L('Contact', 'page', contact), L('Archives URCF', 'url', null, 'https://archives.pcrf-ic.fr/')].filter((l): l is Link => Boolean(l)) },
+        { title: 'Le parti', links: [quiSommesNous ? L('Qui sommes-nous ?', 'article', quiSommesNous) : null, L('Programme', 'page', programme), L('Nous rejoindre', 'page', rejoindre), L('Faire un don', 'page', don), L('Contact', 'page', contact), L('Archives URCF', 'url', null, 'https://archives.pcrf-ic.fr/')].filter((l): l is Link => Boolean(l)) },
         {
           title: 'Action communiste européenne',
           links: [

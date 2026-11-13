@@ -130,9 +130,21 @@ export default async function SlugPage({ params }: Params) {
         ) : (
           coverUrl && (
             <figure className={`article__cover${chain.some((r) => r.slug === 'campagnes') ? ' article__cover--campagne' : ''}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={coverUrl} alt={mediaAlt(a.cover)} />
+              {a.externalUrl ? (
+                <a href={a.externalUrl} target="_blank" rel="noopener" title="Ouvrir le site de la campagne">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={coverUrl} alt={mediaAlt(a.cover)} />
+                </a>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={coverUrl} alt={mediaAlt(a.cover)} />
+              )}
               {cover?.caption && <figcaption>{cover.caption}</figcaption>}
+              {a.externalUrl && (
+                <a className="btn btn--red btn--small" href={a.externalUrl} target="_blank" rel="noopener">
+                  Voir le site de la campagne
+                </a>
+              )}
             </figure>
           )
         )}

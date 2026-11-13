@@ -6,7 +6,16 @@ import { rubriqueHref } from '@/lib/links'
 import { getSite } from '@/lib/queries'
 import { youtubeId, youtubeThumb } from '@/lib/youtube'
 
-type Props = { article: Partial<Article> & Pick<Article, 'title' | 'slug'>; variant?: 'card' | 'lead' | 'row' | 'compact'; tall?: boolean }
+/** Article allégé : ce que renvoient les listes (ARTICLE_LIST_SELECT) ou un article complet. */
+export type ArticleLite = Partial<Article> & Pick<Article, 'title' | 'slug'>
+
+type Props = {
+  article: ArticleLite
+  variant?: 'card' | 'lead' | 'row' | 'compact'
+  tall?: boolean
+  /** Adresse externe ouverte par le visuel (page Campagnes : le logo mène au site de la campagne). */
+  mediaHref?: string | null
+}
 
 /** Au-delà de cette longueur, le titre est composé un cran plus petit (puis coupé par le CSS). */
 const LONG_TITLE = 90
@@ -21,7 +30,7 @@ export function articleImage(article: Partial<Article>, size: 'thumbnail' | 'car
 
 const POSITIONS: Record<string, string> = { top: 'center top', bottom: 'center bottom', left: 'left center', right: 'right center' }
 
-export async function ArticleCard({ article, variant = 'card', tall = false }: Props) {
+export async function ArticleCard({ article, variant = 'card', tall = false, mediaHref }: Props) {
   const img = articleImage(article, variant === 'lead' ? 'large' : variant === 'compact' ? 'thumbnail' : 'card')
   const logo = img ? null : mediaUrl((await getSite()).logo, 'card')
   const objectPosition = article.coverPosition ? POSITIONS[article.coverPosition] : undefined
@@ -32,7 +41,12 @@ export async function ArticleCard({ article, variant = 'card', tall = false }: P
   const showChapo = (variant === 'card' || variant === 'lead') && !!article.chapo
   return (
     <article className={`card card--${variant}${tall ? ' card--tall' : ''}${article.coverFit === 'contain' ? ' card--contain' : ''}`}>
-      {img ? (
+      {img && mediaHref ? (
+        <a className="card__media" href={mediaHref} target="_blank" rel="noopener" tabIndex={-1} aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={img.src} alt="" loading="lazy" style={objectPosition ? { objectPosition } : undefined} />
+        </a>
+      ) : img ? (
         <Link className="card__media" href={href} tabIndex={-1} aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={img.src} alt="" loading={variant === 'lead' ? 'eager' : 'lazy'} style={objectPosition ? { objectPosition } : undefined} />
@@ -59,6 +73,11 @@ export async function ArticleCard({ article, variant = 'card', tall = false }: P
           </Link>
         </h3>
         {showChapo && <p className="card__chapo">{frTypo(excerpt(article.chapo, variant === 'lead' ? 240 : 140))}</p>}
+        {mediaHref && (
+          <a className="card__ext" href={mediaHref} target="_blank" rel="noopener">
+            Site de la campagne <span aria-hidden="true">↗</span>
+          </a>
+        )}
         {article.date && (
           <time className="card__date" dateTime={article.date}>
             {formatDate(article.date)}

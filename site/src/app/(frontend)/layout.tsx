@@ -10,6 +10,9 @@ import { getNavigation, getSite } from '@/lib/queries'
 const display = localFont({ src: '../../fonts/bebas-neue.woff2', weight: '400', variable: '--font-display', display: 'swap' })
 const body = localFont({ src: '../../fonts/inter-variable.woff2', weight: '100 900', variable: '--font-body', display: 'swap' })
 
+/** Lit le choix « mode nuit » mémorisé dans le navigateur (clé partagée avec ThemeToggle). */
+const THEME_SCRIPT = `try{if(localStorage.getItem('pcrf-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}`
+
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSite()
   return {
@@ -31,7 +34,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [site, nav] = await Promise.all([getSite(), getNavigation()])
   return (
-    <html lang="fr" className={`${display.variable} ${body.variable}`}>
+    <html lang="fr" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Mode nuit : appliqué avant le premier rendu pour éviter un flash de fond blanc. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         <a className="skip" href="#contenu">
           Aller au contenu

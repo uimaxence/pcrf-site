@@ -89,6 +89,16 @@ export const Articles: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     {
+      name: 'externalUrl',
+      type: 'text',
+      label: 'Site de la campagne (adresse)',
+      admin: {
+        position: 'sidebar',
+        description: 'Rubrique Campagnes : adresse du site de la campagne (ex. https://campagnepourlapaix.wordpress.com). Dans la liste des campagnes et en tête de l’article, le logo ouvre directement ce site.',
+      },
+      validate: (value: unknown) => (!value || /^https?:\/\/\S+$/.test(String(value)) ? true : 'L’adresse doit commencer par http:// ou https://'),
+    },
+    {
       name: 'date',
       type: 'date',
       label: 'Date de publication',

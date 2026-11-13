@@ -1,28 +1,20 @@
 'use server'
 
+import { field, tooMany, validEmail } from '@/lib/forms'
 import { getPayloadClient } from '@/lib/payload'
 
 export type ContactState = { ok: boolean; message: string }
 
-const recent = new Map<string, number[]>()
-function tooMany(key: string) {
-  const now = Date.now()
-  const list = (recent.get(key) || []).filter((t) => now - t < 10 * 60 * 1000)
-  list.push(now)
-  recent.set(key, list)
-  return list.length > 5
-}
-
 /** Envoie le message du formulaire de contact à l'adresse configurée dans les réglages du site. */
 export async function sendContact(_prev: ContactState, formData: FormData): Promise<ContactState> {
-  const name = String(formData.get('name') || '').trim().slice(0, 120)
-  const email = String(formData.get('email') || '').trim().slice(0, 200)
-  const subject = String(formData.get('subject') || '').trim().slice(0, 200)
-  const message = String(formData.get('message') || '').trim().slice(0, 5000)
+  const name = field(formData, 'name', 120)
+  const email = field(formData, 'email', 200)
+  const subject = field(formData, 'subject', 200)
+  const message = field(formData, 'message', 5000)
   const honeypot = String(formData.get('website') || '')
   if (honeypot) return { ok: true, message: 'Merci, votre message a été envoyé.' }
   if (!name || !email || !message) return { ok: false, message: 'Merci de remplir votre nom, votre adresse mail et votre message.' }
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, message: 'L’adresse mail ne semble pas valide.' }
+  if (!validEmail(email)) return { ok: false, message: 'L’adresse mail ne semble pas valide.' }
   if (tooMany(email)) return { ok: false, message: 'Trop de messages envoyés. Réessayez dans quelques minutes.' }
 
   const payload = await getPayloadClient()

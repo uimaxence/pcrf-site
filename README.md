@@ -27,6 +27,7 @@ cd site
 pnpm import:spip       # importe migration/out + migration/media dans Payload (rejouable)
 pnpm seed              # compte admin, logo, bandeau, menus, pages fixes (rejouable)
 pnpm programme <pdf> <page1.jpg> <page2.jpg> [page3.jpg]   # installe le PDF du programme et ses pages d'aperçu dans la fenêtre d'accueil (rejouable)
+pnpm portfolios        # galeries « Portfolio » de l'ancien site (photos téléchargées puis ajoutées aux articles ; rejouable)
 pnpm cleanup:drafts    # supprime les brouillons sans titre
 pnpm export:contenu    # export complet lisible (HTML + médias) dans ../export
 pnpm screenshots       # captures d'écran du site local dans site/.screenshots

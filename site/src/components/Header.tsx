@@ -5,6 +5,7 @@ import { mediaUrl } from '@/lib/media'
 import { MobileMenu, type MenuItem } from './MobileMenu'
 import { SearchForm } from './SearchForm'
 import { SocialLinks } from './SocialLinks'
+import { ThemeToggle } from './ThemeToggle'
 
 function toItems(items: Navigation['primary']): MenuItem[] {
   return (items ?? []).map((item) => {
@@ -55,12 +56,16 @@ export function Header({ site, nav }: { site: Site; nav: Navigation }) {
           <div className="topbar__search">
             <SearchForm compact />
           </div>
+          <ThemeToggle className="topbar__theme" />
           <div className="topbar__actions">
             {site.brevoFormUrl && (
               <a className="btn btn--ghost" href={site.brevoFormUrl} target="_blank" rel="noopener">
                 Lettre d’info
               </a>
             )}
+            <Link className="btn btn--white" href="/nous-rejoindre">
+              Nous rejoindre
+            </Link>
             <Link className="btn btn--red" href="/don">
               Faire un don
             </Link>

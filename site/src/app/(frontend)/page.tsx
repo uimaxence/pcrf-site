@@ -25,13 +25,13 @@ export default async function HomePage() {
   const [lead, ...side] = featured
   const latest = await getLatestArticles(accueil.latestCount ?? 6, featured.map((a) => a.id))
   const video = accueil.videoArticle && typeof accueil.videoArticle === 'object' ? accueil.videoArticle : await getLatestVideo()
-  const journal =
-    accueil.journalArticle && typeof accueil.journalArticle === 'object'
-      ? accueil.journalArticle
-      : ((await getLatestInRubriqueSlug('journal', 1))[0] ?? null)
+  // Fenêtre Journal : le numéro choisi dans l'admin (sinon le dernier), puis les numéros précédents pour les feuilles.
+  const latestIssues = await getLatestInRubriqueSlug('journal', 3)
+  const journal = accueil.journalArticle && typeof accueil.journalArticle === 'object' ? accueil.journalArticle : (latestIssues[0] ?? null)
+  const issues = journal ? [journal, ...latestIssues.filter((a) => a.id !== journal.id)].slice(0, 3) : []
   const blocks = (accueil.rubriqueBlocks ?? []).filter((r): r is Rubrique => typeof r === 'object')
   const blockData = await Promise.all(blocks.map(async (r) => ({ r, docs: (await getArticlesByRubrique(r, 1, 4)).docs })))
-  const banner = site.bannerEnabled ? mediaUrl(site.bannerImage, 'large') : null
+  const banner = site.bannerEnabled ? mediaUrl(site.bannerImage, 'banner') : null
   const slides = (site.mastheadImages ?? []).map((m) => mediaUrl(m.image, 'card')).filter((u): u is string => !!u)
 
   return (
@@ -58,7 +58,7 @@ export default async function HomePage() {
           <p className="empty">Aucun article publié pour le moment.</p>
         )}
 
-        <FixedWindows accueil={accueil} site={site} video={video} journal={journal as never} />
+        <FixedWindows accueil={accueil} site={site} video={video} journal={journal} issues={issues} />
 
         <SectionTitle href="/recherche" hint="Rechercher">
           Derniers articles

@@ -28,6 +28,8 @@ export const Media: CollectionConfig = {
       { name: 'thumbnail', width: 400, withoutEnlargement: true },
       { name: 'card', width: 800, withoutEnlargement: true },
       { name: 'large', width: 1400, withoutEnlargement: true },
+      // Bandeau de l'accueil : affiché sur toute la largeur de l'écran, il a besoin de plus que « large ».
+      { name: 'banner', width: 2400, withoutEnlargement: true },
     ],
   },
   fields: [

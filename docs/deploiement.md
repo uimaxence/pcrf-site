@@ -14,7 +14,34 @@ Voir `site/.env.example`. En production, au minimum :
 | `NEXT_PUBLIC_SERVER_URL` | Adresse publique, ex. `https://www.pcrf-ic.fr` |
 | `S3_BUCKET`, `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | Stockage des médias (Cloudflare R2, Scaleway Object Storage, Cellar…) |
 | `LEGACY_MEDIA_BASE_URL` | Adresse publique du dossier `migration/media` copié dans le bucket (les articles importés y font référence sous `/legacy-media/`) |
-| `SMTP_*` | Envoi des mails « mot de passe oublié » (Brevo SMTP fonctionne) |
+| `SMTP_*` | Envoi des mails : formulaires Contact et Nous rejoindre, « mot de passe oublié » (voir ci-dessous) |
+
+## Envoi des mails (SMTP)
+
+Sans `SMTP_HOST`, rien ne part : les formulaires Contact et « Nous rejoindre » répondent « L'envoi a échoué » et le
+« mot de passe oublié » ne fonctionne pas. Le volume est faible (quelques dizaines de mails par mois) : le plan gratuit
+de Brevo (déjà utilisé pour la lettre d'information, 300 mails par jour) suffit.
+
+1. Dans Brevo : *Expéditeurs et IP › Expéditeurs* → ajouter et vérifier l'adresse d'envoi (par exemple `site@pcrf-ic.fr`,
+   ou à défaut l'adresse Gmail du parti). Pour une adresse en `@pcrf-ic.fr`, authentifier le domaine (*Domaines* : Brevo
+   donne trois enregistrements DNS — DKIM, Brevo-code, DMARC — à poser chez le registrar du nom de domaine).
+2. Dans Brevo : *SMTP et API › SMTP* → créer une clé SMTP (la valeur n'est affichée qu'une fois : la copier tout de suite). L'onglet affiche aussi l'identifiant SMTP (de la forme `xxxxxxx001@smtp-brevo.com`). Le titulaire du compte peut transmettre ces deux valeurs sans donner accès au compte, et révoquer la clé à tout moment au même endroit.
+3. Sur Vercel, *Settings › Environment Variables* (Production) :
+
+   | Variable | Valeur |
+   |---|---|
+   | `SMTP_HOST` | `smtp-relay.brevo.com` |
+   | `SMTP_PORT` | `587` |
+   | `SMTP_USER` | l'identifiant SMTP affiché dans l'onglet SMTP de Brevo |
+   | `SMTP_PASS` | la clé SMTP |
+   | `SMTP_FROM` | l'adresse d'envoi vérifiée (ex. `site@pcrf-ic.fr`) |
+
+4. Redéployer, puis tester le formulaire de contact. Les messages arrivent à l'adresse de **Réglages du site › Réseaux et
+   contact** (contact, et une seconde adresse facultative pour « Nous rejoindre »).
+
+Alternative sans Brevo : le SMTP de Gmail avec un « mot de passe d'application » (`smtp.gmail.com`, port `465`,
+`SMTP_SECURE=true`, `SMTP_USER` et `SMTP_FROM` = l'adresse Gmail), limité à 500 mails par jour ; il faut la validation en
+deux étapes sur le compte Google.
 
 ## Base de données : migrations
 
@@ -25,6 +52,8 @@ cd site
 pnpm payload migrate:create nom_du_changement   # à chaque modification des collections (voir l'avertissement ci-dessous)
 pnpm payload migrate                            # à chaque déploiement, avant le démarrage
 pnpm programme <pdf> <page1> <page2>            # une fois, après le seed : PDF du programme + pages d'aperçu (les fichiers sont dans reference/programme et migration/media/IMG/pdf)
+pnpm portfolios [slug…]                         # galeries « Portfolio » de l'ancien site : télécharge les photos, les met dans Médias, ajoute la galerie aux articles
+pnpm retours:novembre3                          # rubrique Goodies, sites des campagnes, page et menu « Nous rejoindre » (après pnpm portfolios)
 ```
 
 > **Attention : générer les migrations avec les variables `S3_*` définies.** Le plugin de stockage ajoute des colonnes à la

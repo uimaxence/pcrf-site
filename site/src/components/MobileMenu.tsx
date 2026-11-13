@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { ThemeToggle } from './ThemeToggle'
 
 export type MenuItem = { label: string; href: string; external: boolean }
 
@@ -41,8 +42,12 @@ export function MobileMenu({ name, primary, secondary, newsletterUrl, search, so
   const close = useRef<HTMLButtonElement>(null)
   const wasOpen = useRef(false)
 
-  // Fermer à chaque changement de page.
-  useEffect(() => setOpen(false), [pathname])
+  // Fermer à chaque changement de page (état dérivé pendant le rendu, sans effet).
+  const [lastPath, setLastPath] = useState(pathname)
+  if (pathname !== lastPath) {
+    setLastPath(pathname)
+    setOpen(false)
+  }
 
   // Échap pour fermer, défilement de la page bloqué pendant l'ouverture, focus rendu au bouton à la fermeture.
   useEffect(() => {
@@ -128,13 +133,19 @@ export function MobileMenu({ name, primary, secondary, newsletterUrl, search, so
               <Link className="btn btn--red" href="/don" onClick={done}>
                 Faire un don
               </Link>
+              <Link className="btn btn--white" href="/nous-rejoindre" onClick={done}>
+                Nous rejoindre
+              </Link>
               {newsletterUrl && (
                 <a className="btn btn--ghost" href={newsletterUrl} target="_blank" rel="noopener">
                   Lettre d’info
                 </a>
               )}
             </div>
-            {social}
+            <div className="mmenu__tools">
+              {social}
+              <ThemeToggle className="theme--menu" withLabel />
+            </div>
           </div>
         </div>
       </div>

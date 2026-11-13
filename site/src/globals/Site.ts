@@ -39,6 +39,12 @@ export const Site: GlobalConfig = {
             { name: 'instagram', type: 'text', label: 'Compte Instagram (adresse)' },
             { name: 'youtube', type: 'text', label: 'Chaîne YouTube (adresse)', defaultValue: 'https://www.youtube.com/channel/UCoyBtYYDy0MuqfR_P_-CVYQ' },
             { name: 'contactEmail', type: 'email', label: 'Adresse mail de contact (reçoit les messages du formulaire)', defaultValue: 'ic.pcrf@gmail.com' },
+            {
+              name: 'joinEmail',
+              type: 'email',
+              label: 'Adresse mail qui reçoit les demandes « Nous rejoindre »',
+              admin: { description: 'Laisser vide : les demandes arrivent à l’adresse de contact.' },
+            },
             { name: 'postalAddress', type: 'textarea', label: 'Adresse postale', defaultValue: 'Amis d’Oulianov, BP 40064, 75862 Paris CEDEX 18' },
           ],
         },

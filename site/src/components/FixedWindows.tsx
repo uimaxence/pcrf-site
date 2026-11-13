@@ -3,16 +3,24 @@ import type { Accueil, Article, Site } from '@/payload-types'
 import { excerpt, frTypo } from '@/lib/format'
 import { mediaUrl } from '@/lib/media'
 import { youtubeId, youtubeThumb } from '@/lib/youtube'
-import { articleImage } from './ArticleCard'
+import { articleImage, type ArticleLite } from './ArticleCard'
 
-type Props = { accueil: Accueil; site: Site; video: Article | null; journal: Article | null }
+type Props = {
+  accueil: Accueil
+  site: Site
+  video: Article | null
+  /** Numéro mis en avant (le premier de `issues`). */
+  journal: ArticleLite | null
+  /** Les derniers numéros, du plus récent au plus ancien : leurs couvertures forment les feuilles qui se soulèvent. */
+  issues: ArticleLite[]
+}
 
 /**
  * Les trois fenêtres fixes de l'accueil : Programme, Dernière vidéo, Journal.
  * Les trois partagent le même squelette (étiquette, visuel 16/9, titre, texte,
  * pied calé en bas) pour rester alignées quelle que soit la longueur des contenus.
  */
-export function FixedWindows({ accueil, site, video, journal }: Props) {
+export function FixedWindows({ accueil, site, video, journal, issues }: Props) {
   const programmeCover = mediaUrl(accueil.programmeCover, 'card')
   // Feuilles « qui se soulèvent » : les pages d'aperçu si elles existent, sinon la couverture seule.
   const pages = (accueil.programmePages ?? []).map((p) => mediaUrl(p.image, 'card')).filter((u): u is string => !!u)
@@ -25,7 +33,8 @@ export function FixedWindows({ accueil, site, video, journal }: Props) {
   const yt = youtubeId(video?.videoUrl)
   const videoHref = video ? `/${video.slug}` : '/rubrique/videos'
 
-  const journalImg = journal ? articleImage(journal, 'card') : null
+  // Couvertures des derniers numéros : la plus récente devant, comme les pages du programme.
+  const journalSheets = issues.map((a) => articleImage(a, 'card')?.src).filter((u): u is string => !!u).slice(0, 3)
   const journalHref = journal ? `/${journal.slug}` : '/rubrique/journal'
   const journalName = site.journalName || 'Journal'
 
@@ -99,12 +108,15 @@ export function FixedWindows({ accueil, site, video, journal }: Props) {
 
       <article className="window window--journal">
         <p className="window__label">{accueil.journalTitle || journalName}</p>
-        <Link href={journalHref} className="window__visual window__visual--journal" tabIndex={-1} aria-hidden="true">
-          {journalImg ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={journalImg.src} alt="" />
-          ) : (
-            <span className="window__slogan">{journalName}</span>
+        <Link href={journalHref} className={`window__visual window__visual--journal${journalSheets.length ? ' window__visual--sheets' : ''}`} tabIndex={-1} aria-hidden="true">
+          <span className="window__slogan">{frTypo(journalSheets.length ? 'Le journal du PCRF' : journalName)}</span>
+          {journalSheets.length > 0 && (
+            <span className="sheets" data-count={journalSheets.length}>
+              {journalSheets.map((src, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={src} src={src} alt="" className={`sheet sheet--${i + 1}`} loading="lazy" />
+              ))}
+            </span>
           )}
         </Link>
         <h3 className="window__title">

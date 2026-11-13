@@ -13,6 +13,7 @@ export const ARTICLE_LIST_SELECT = {
   featured: true,
   coverPosition: true,
   coverFit: true,
+  externalUrl: true,
 } as const
 
 /** Filtre commun : écarte les articles masqués (case « Visible sur le site » décochée). */

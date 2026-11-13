@@ -29,6 +29,9 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
   // Matériel et ses sous-rubriques (affiches, tracts, brochures) : visuels en hauteur, comme les documents eux-mêmes.
   const tall = rubrique.slug === 'materiel' || parent?.slug === 'materiel'
   const gridClass = tall ? 'grid-3 grid--tall' : 'grid-3'
+  // Campagnes : le logo de chaque campagne ouvre directement son site (champ « Site de la campagne »).
+  const campagnes = rubrique.slug === 'campagnes' || parent?.slug === 'campagnes'
+  const siteOf = (a: { externalUrl?: string | null }) => (campagnes ? a.externalUrl : undefined)
   // Rubrique avec sous-rubriques (ex. Matériel) : ses propres articles passent d'abord, « à la une ».
   const direct = children.length ? await getDirectArticles(rubrique) : []
   // Rubrique « vitrine » : tous ses articles en propre tiennent à la une, le reste est dans les sous-rubriques.
@@ -84,7 +87,7 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
           <SectionTitle>À la une</SectionTitle>
           <div className="grid-3">
             {direct.map((a) => (
-              <ArticleCard key={a.id} article={a} tall={tall} />
+              <ArticleCard key={a.id} article={a} tall={tall} mediaHref={siteOf(a)} />
             ))}
           </div>
         </section>
@@ -96,7 +99,7 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
           </SectionTitle>
           <div className={gridClass}>
             {s.res.docs.map((a) => (
-              <ArticleCard key={a.id} article={a} tall={tall} />
+              <ArticleCard key={a.id} article={a} tall={tall} mediaHref={siteOf(a)} />
             ))}
           </div>
         </section>
@@ -108,7 +111,7 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
           {res.docs.length ? (
             <div className={gridClass}>
               {res.docs.map((a) => (
-                <ArticleCard key={a.id} article={a} tall={tall} />
+                <ArticleCard key={a.id} article={a} tall={tall} mediaHref={siteOf(a)} />
               ))}
             </div>
           ) : (

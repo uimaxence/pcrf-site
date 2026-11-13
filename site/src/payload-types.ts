@@ -183,6 +183,10 @@ export interface Article {
    */
   videoUrl?: string | null;
   rubrique: number | Rubrique;
+  /**
+   * Rubrique Campagnes : adresse du site de la campagne (ex. https://campagnepourlapaix.wordpress.com). Dans la liste des campagnes et en tête de l’article, le logo ouvre directement ce site.
+   */
+  externalUrl?: string | null;
   date: string;
   /**
    * Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents.
@@ -253,6 +257,14 @@ export interface Media {
       filename?: string | null;
     };
     large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    banner?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -459,6 +471,7 @@ export interface ArticlesSelect<T extends boolean = true> {
       };
   videoUrl?: T;
   rubrique?: T;
+  externalUrl?: T;
   date?: T;
   featured?: T;
   congres?: T;
@@ -519,6 +532,16 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
         large?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        banner?:
           | T
           | {
               url?: T;
@@ -657,6 +680,10 @@ export interface Site {
   instagram?: string | null;
   youtube?: string | null;
   contactEmail?: string | null;
+  /**
+   * Laisser vide : les demandes arrivent à l’adresse de contact.
+   */
+  joinEmail?: string | null;
   postalAddress?: string | null;
   newsletterTitle?: string | null;
   newsletterText?: string | null;
@@ -785,6 +812,7 @@ export interface SiteSelect<T extends boolean = true> {
   instagram?: T;
   youtube?: T;
   contactEmail?: T;
+  joinEmail?: T;
   postalAddress?: T;
   newsletterTitle?: T;
   newsletterText?: T;
