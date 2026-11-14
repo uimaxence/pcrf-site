@@ -117,6 +117,12 @@ export async function getPageBySlug(slug: string) {
   const res = await payload.find({ collection: 'pages', where: { slug: { equals: slug } }, limit: 1, depth: 2 })
   return res.docs[0] ?? null
 }
+/** Page dont l'adresse ne diffère que par la casse (ancienne adresse d'un article devenu page : /Mentions-legales → /mentions-legales). */
+export async function getPageBySlugInsensitive(slug: string) {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'pages', where: { slug: { like: slug } }, limit: 5, depth: 0, select: { slug: true } })
+  return res.docs.find((p) => p.slug?.toLowerCase() === slug.toLowerCase()) ?? null
+}
 export async function getArticleBySpipId(id: number): Promise<Article | null> {
   const payload = await getPayloadClient()
   const res = await payload.find({ collection: 'articles', where: { 'legacy.spipId': { equals: id } }, limit: 1, depth: 0 })

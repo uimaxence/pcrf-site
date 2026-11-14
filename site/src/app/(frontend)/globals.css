@@ -412,6 +412,8 @@ a { color: var(--rouge-texte); }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
 .footer__title { margin: 0 0 10px; font: 400 18px var(--ff-display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--rouge-sur-noir); }
 .footer__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
+/* Colonne « deux colonnes » (partis de l'ACE) : le premier lien en pleine largeur, les suivants sur deux colonnes qui démarrent au même niveau. */
+.footer__twocols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; margin-top: 6px; }
 .social--footer { margin-top: 12px; }
 .footer__bottom { margin-top: 36px; padding-top: 16px; border-top: 1px solid #333; font-size: 13px; color: #9a9a9a; }
 .footer__bottom p { margin: 0; }
@@ -471,6 +473,8 @@ a { color: var(--rouge-texte); }
 .form__ok { padding: 14px 16px; background: var(--fond-papier); border-left: 4px solid var(--rouge); font-weight: 600; }
 .form .btn { align-self: flex-start; }
 .contact__alt { margin-top: 18px; color: var(--texte-doux); font-size: 15px; }
+.contact__join { margin-top: 40px; padding-top: 24px; border-top: 3px solid var(--texte-fort); }
+.contact__join p { margin: 0 0 16px; }
 .form__grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
 @media (min-width: 641px) {
   .form__grid { grid-template-columns: 1fr 1fr; }

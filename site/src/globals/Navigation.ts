@@ -17,7 +17,17 @@ export const Navigation: GlobalConfig = {
       type: 'array',
       label: 'Colonnes du pied de page',
       labels: { singular: 'Colonne', plural: 'Colonnes' },
-      fields: [{ name: 'title', type: 'text', label: 'Titre', required: true }, linkField('links')],
+      fields: [
+        { name: 'title', type: 'text', label: 'Titre', required: true },
+        {
+          name: 'twoColumns',
+          type: 'checkbox',
+          label: 'Liens sur deux colonnes',
+          defaultValue: false,
+          admin: { description: 'Le premier lien reste en pleine largeur (ex. : Action communiste européenne) ; les suivants se répartissent sur deux colonnes.' },
+        },
+        linkField('links'),
+      ],
     },
   ],
 }

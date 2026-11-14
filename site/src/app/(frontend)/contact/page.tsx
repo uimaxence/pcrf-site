@@ -30,6 +30,15 @@ export default async function ContactPage() {
             </p>
           )}
         </section>
+        <section className="contact__join" aria-labelledby="contact-join-title">
+          <h2 id="contact-join-title" className="contact__title">
+            Nous rejoindre
+          </h2>
+          <p>Tu partages nos analyses et tu veux agir avec nous ? Un camarade te recontacte rapidement.</p>
+          <Link className="btn btn--red" href="/nous-rejoindre">
+            Nous rejoindre
+          </Link>
+        </section>
       </article>
     </div>
   )

@@ -330,6 +330,7 @@ export interface Page {
   legacy?: {
     html?: string | null;
     spipUrl?: string | null;
+    spipId?: number | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -582,6 +583,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         html?: T;
         spipUrl?: T;
+        spipId?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -734,6 +736,10 @@ export interface Navigation {
   footerColumns?:
     | {
         title: string;
+        /**
+         * Le premier lien reste en pleine largeur (ex. : Action communiste européenne) ; les suivants se répartissent sur deux colonnes.
+         */
+        twoColumns?: boolean | null;
         links?:
           | {
               label: string;
@@ -859,6 +865,7 @@ export interface NavigationSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        twoColumns?: T;
         links?:
           | T
           | {

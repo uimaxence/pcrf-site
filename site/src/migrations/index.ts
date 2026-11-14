@@ -6,6 +6,7 @@ import * as migration_20261105_083747_ajout_cover_fit_masthead from './20261105_
 import * as migration_20261105_172002_page_congres from './20261105_172002_page_congres';
 import * as migration_20261106_092829_texte_lettre_info from './20261106_092829_texte_lettre_info';
 import * as migration_20261110_094406_ajout_rejoindre_campagne_bandeau from './20261110_094406_ajout_rejoindre_campagne_bandeau';
+import * as migration_20261114_190137_deux_colonnes_pied_page_spip_id_pages from './20261114_190137_deux_colonnes_pied_page_spip_id_pages';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20261110_094406_ajout_rejoindre_campagne_bandeau.up,
     down: migration_20261110_094406_ajout_rejoindre_campagne_bandeau.down,
-    name: '20261110_094406_ajout_rejoindre_campagne_bandeau'
+    name: '20261110_094406_ajout_rejoindre_campagne_bandeau',
+  },
+  {
+    up: migration_20261114_190137_deux_colonnes_pied_page_spip_id_pages.up,
+    down: migration_20261114_190137_deux_colonnes_pied_page_spip_id_pages.down,
+    name: '20261114_190137_deux_colonnes_pied_page_spip_id_pages'
   },
 ];

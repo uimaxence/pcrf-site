@@ -9,7 +9,7 @@ import { YouTube } from '@/components/YouTube'
 import { excerpt, formatDate, frTypo } from '@/lib/format'
 import { rubriqueHref } from '@/lib/links'
 import { mediaAlt, mediaDoc, mediaUrl } from '@/lib/media'
-import { getArticleBySlug, getArticlesByRubrique, getPageBySlug, getRubriqueByLegacySlug, getSite } from '@/lib/queries'
+import { getArticleBySlug, getArticlesByRubrique, getPageBySlug, getPageBySlugInsensitive, getRubriqueByLegacySlug, getSite } from '@/lib/queries'
 
 export const revalidate = 300
 export const dynamicParams = true
@@ -30,8 +30,10 @@ async function load(slugRaw: string) {
   const page = await getPageBySlug(slug)
   if (page) return { page, article: null as Article | null }
   const article = await getArticleBySlug(slug)
-  if (!article) notFound()
-  return { page: null as PageDoc | null, article }
+  if (article) return { page: null as PageDoc | null, article }
+  const other = await getPageBySlugInsensitive(slug)
+  if (other && other.slug !== slug) permanentRedirect(`/${other.slug}`)
+  notFound()
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

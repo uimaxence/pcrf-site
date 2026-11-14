@@ -24,10 +24,11 @@ export const Pages: CollectionConfig = {
       name: 'legacy',
       type: 'group',
       label: 'Ancien site',
-      admin: { condition: (data) => Boolean(data?.legacy?.html) },
+      admin: { condition: (data) => Boolean(data?.legacy?.html || data?.legacy?.spipUrl) },
       fields: [
         { name: 'html', type: 'code', label: 'Contenu importé (HTML)', admin: { language: 'html' }, access: { update: isAdminField } },
         { name: 'spipUrl', type: 'text', label: 'Ancienne adresse', admin: { readOnly: true } },
+        { name: 'spipId', type: 'number', label: 'Identifiant SPIP', admin: { readOnly: true }, index: true },
       ],
     },
   ],

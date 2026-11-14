@@ -11,8 +11,12 @@ export async function GET(req: NextRequest) {
   const art = q.match(/^article(\d+)/)
   if (art) {
     const payload = await getPayloadClient()
-    const res = await payload.find({ collection: 'articles', where: { 'legacy.spipId': { equals: Number(art[1]) } }, limit: 1, depth: 0 })
-    return go(res.docs[0] ? `/${res.docs[0].slug}` : '/')
+    const where = { 'legacy.spipId': { equals: Number(art[1]) } }
+    const res = await payload.find({ collection: 'articles', where, limit: 1, depth: 0 })
+    if (res.docs[0]) return go(`/${res.docs[0].slug}`)
+    // Anciens articles devenus des pages (Qui sommes-nous, Liens, Mentions légales…).
+    const pages = await payload.find({ collection: 'pages', where, limit: 1, depth: 0 })
+    return go(pages.docs[0] ? `/${pages.docs[0].slug}` : '/')
   }
   const rub = q.match(/^rubrique(\d+)/)
   if (rub) {

@@ -54,6 +54,7 @@ pnpm payload migrate                            # à chaque déploiement, avant 
 pnpm programme <pdf> <page1> <page2>            # une fois, après le seed : PDF du programme + pages d'aperçu (les fichiers sont dans reference/programme et migration/media/IMG/pdf)
 pnpm portfolios [slug…]                         # galeries « Portfolio » de l'ancien site : télécharge les photos, les met dans Médias, ajoute la galerie aux articles
 pnpm retours:novembre3                          # rubrique Goodies, sites des campagnes, page et menu « Nous rejoindre » (après pnpm portfolios)
+pnpm retours:novembre4                          # fin de la rubrique « Informations » (pages Qui sommes-nous, Liens…), partis de l'ACE, « Nous rejoindre » dans le pied de page, un article par goodie
 ```
 
 > **Attention : générer les migrations avec les variables `S3_*` définies.** Le plugin de stockage ajoute des colonnes à la
