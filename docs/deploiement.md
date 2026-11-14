@@ -114,6 +114,26 @@ Le dossier `migration/media` (images et PDF récupérés de SPIP) doit être cop
 rclone copy migration/media remote:bucket/legacy
 ```
 
+## Archives de l'URCF (archives.pcrf-ic.fr)
+
+L'ancien site de l'URCF (SPIP, 793 articles) n'est plus un site dynamique : c'est une **copie figée** servie par un projet
+Vercel séparé (`pcrf-archives`, dossier statique, sans base de données). Les anciennes adresses `spip.php?article123`
+sont redirigées vers les pages figées par `middleware.js`. La recherche interne et les formulaires ont été retirés.
+
+Reconstruire la copie (outillage dans `migration/archives-urcf/`) :
+
+1. Aspirer le site d'origine avec `wget --mirror --convert-links --adjust-extension --page-requisites
+   --restrict-file-names=windows` (voir les options exactes dans l'historique git de ce fichier), puis relancer `wget -i`
+   sur les adresses tombées en erreur 503.
+2. `python3 migration/archives-urcf/build.py <aspiration> <copie-ftp-de-IMG> <dossier-projet>` : exclut les fichiers
+   étrangers à SPIP, ajoute les documents de `IMG/` absents de l'aspiration, neutralise les liens vers `urcf.fr` (domaine
+   squatté), retire recherche et connexion, ajoute le bandeau d'avertissement et `404.html`.
+3. Dans `<dossier-projet>` : `vercel deploy --prod --yes` (projet `pcrf-archives`). Le domaine `archives.pcrf-ic.fr` est
+   rattaché à ce projet ; la zone DNS de `pcrf-ic.fr` est hébergée chez Vercel (`vercel dns ls pcrf-ic.fr`).
+
+Les sauvegardes complètes des deux anciens sites Ouvaton (fichiers et export SQL du 14 novembre 2026) sont conservées
+hors dépôt par le prestataire ; en demander une copie au besoin avant toute fermeture définitive d'Ouvaton.
+
 ## Sauvegardes
 
 - Base : `pg_dump` quotidien (la plupart des hébergeurs le proposent). Garder 30 jours.
