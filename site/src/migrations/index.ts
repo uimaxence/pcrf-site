@@ -8,6 +8,7 @@ import * as migration_20261106_092829_texte_lettre_info from './20261106_092829_
 import * as migration_20261110_094406_ajout_rejoindre_campagne_bandeau from './20261110_094406_ajout_rejoindre_campagne_bandeau';
 import * as migration_20261114_190137_deux_colonnes_pied_page_spip_id_pages from './20261114_190137_deux_colonnes_pied_page_spip_id_pages';
 import * as migration_20261116_081913_diaporama_une from './20261116_081913_diaporama_une';
+import * as migration_20261116_122104_retrait_diaporama from './20261116_122104_retrait_diaporama';
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20261116_081913_diaporama_une.up,
     down: migration_20261116_081913_diaporama_une.down,
-    name: '20261116_081913_diaporama_une'
+    name: '20261116_081913_diaporama_une',
+  },
+  {
+    up: migration_20261116_122104_retrait_diaporama.up,
+    down: migration_20261116_122104_retrait_diaporama.down,
+    name: '20261116_122104_retrait_diaporama'
   },
 ];

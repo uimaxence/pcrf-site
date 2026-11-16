@@ -189,7 +189,7 @@ export interface Article {
   externalUrl?: string | null;
   date: string;
   /**
-   * Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents. Pour faire défiler plusieurs articles dans le grand emplacement : Page d’accueil › À la une.
+   * Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents. Pour choisir et ordonner les articles à la une : Page d’accueil › À la une.
    */
   featured?: boolean | null;
   /**
@@ -759,7 +759,7 @@ export interface Navigation {
   createdAt?: string | null;
 }
 /**
- * Le diaporama « À la une », les trois fenêtres fixes (Programme, Vidéo, Journal) et le nombre d’articles affichés.
+ * Les articles à la une, les trois fenêtres fixes (Programme, Vidéo, Journal) et le nombre d’articles affichés.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "accueil".
@@ -791,16 +791,9 @@ export interface Accueil {
    */
   journalArticle?: (number | null) | Article;
   /**
-   * Cliquer dans le champ pour choisir un article dans la liste. Ils défilent l’un après l’autre dans le grand emplacement « À la une », dans cet ordre : faire glisser les étiquettes pour les réordonner. Les articles masqués ou en brouillon sont ignorés. Laisser vide : le dernier article coché « À la une » occupe seul le grand emplacement.
+   * Cliquer dans le champ pour choisir un article dans la liste. Le premier s’affiche en grand, les suivants dans la colonne de droite, dans cet ordre : faire glisser les étiquettes pour les réordonner. Les places restantes sont complétées par les articles cochés « À la une » puis par les plus récents. Les articles masqués ou en brouillon sont ignorés.
    */
   featuredArticles?: (number | Article)[] | null;
-  /**
-   * Le défilement s’arrête quand la souris est sur le diaporama ; le visiteur peut aussi le mettre en pause ou passer d’un article à l’autre.
-   */
-  featuredInterval?: number | null;
-  /**
-   * La colonne de droite reprend les articles cochés « À la une » qui ne sont pas dans le diaporama, puis les plus récents.
-   */
   featuredCount?: number | null;
   latestCount?: number | null;
   rubriqueBlocks?: (number | Rubrique)[] | null;
@@ -916,7 +909,6 @@ export interface AccueilSelect<T extends boolean = true> {
   journalTitle?: T;
   journalArticle?: T;
   featuredArticles?: T;
-  featuredInterval?: T;
   featuredCount?: T;
   latestCount?: T;
   rubriqueBlocks?: T;
