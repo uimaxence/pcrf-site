@@ -112,7 +112,7 @@ export const Articles: CollectionConfig = {
       type: 'checkbox',
       label: 'À la une',
       defaultValue: false,
-      admin: { position: 'sidebar', description: 'Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents.' },
+      admin: { position: 'sidebar', description: 'Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents. Pour faire défiler plusieurs articles dans le grand emplacement : Page d’accueil › À la une.' },
       index: true,
     },
     {

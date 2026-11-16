@@ -22,7 +22,7 @@ Dans le menu de gauche, cliquez sur **Articles**, puis sur **Créer**.
 | **Rubrique** (à droite) | Obligatoire : France, International, Luttes, Journal, Campagnes, Vidéos, Théorie, Matériel (Brochures, Affiches, Tracts, Goodies)… |
 | **Site de la campagne** (à droite) | Pour un article de la rubrique Campagnes : l'adresse du site de la campagne. Dans la liste des campagnes et en tête de l'article, le logo ouvre directement ce site. |
 | **Date de publication** | Proposée automatiquement. Modifiez-la pour antidater ou programmer. |
-| **Mettre à la une** | Cochez pour afficher l'article en grand en haut de l'accueil. |
+| **Mettre à la une** | Cochez pour afficher l'article en haut de l'accueil : en grand, ou dans la colonne de droite si un diaporama est réglé (voir « Le diaporama « À la une » » plus bas). |
 
 Vous pouvez coller un texte venant de Word ou de LibreOffice : la mise en forme de base est conservée.
 
@@ -61,6 +61,12 @@ Le bouton « Nous rejoindre » (barre du haut, menu noir, pied de page) ouvre un
 ## Le mode nuit
 
 Le bouton lune, dans la barre du haut (et dans le menu sur téléphone), passe le site en fond sombre. Le choix est mémorisé par le navigateur de chaque visiteur ; il ne change rien pour les autres.
+
+## Le diaporama « À la une »
+
+Dans **Page d'accueil › À la une**, un administrateur choisit les articles qui défilent dans le grand emplacement en haut de l'accueil : un clic dans le champ **Articles du diaporama** ouvre la liste des articles ; chaque article choisi apparaît sous forme d'étiquette, et les étiquettes se réordonnent en les faisant glisser (la première s'affiche d'abord). La durée d'affichage de chaque article se règle juste en dessous (7 secondes par défaut). Sur le site, le défilement s'arrête quand la souris est sur le diaporama ; les flèches, les traits et le bouton pause permettent au visiteur de naviguer. Les articles masqués ou en brouillon sont ignorés.
+
+La colonne de droite reprend les articles cochés **Mettre à la une** qui ne sont pas dans le diaporama, puis les plus récents. Si le diaporama est vide, l'accueil fonctionne comme avant : le dernier article coché « À la une » occupe seul le grand emplacement.
 
 ## La fenêtre « Programme » de l'accueil
 

@@ -274,6 +274,37 @@ a { color: var(--rouge-texte); }
   .une__side .card--row .card__title--long { font-size: 16px; }
 }
 
+/* Diaporama « À la une » : les articles choisis dans Page d'accueil se fondent l'un dans l'autre dans le grand emplacement.
+   Les diapositives sont empilées dans une même case de grille (hauteur = la plus haute, pas de saut) ; le trait rouge sous
+   le diaporama se remplit pendant la durée d'affichage et déclenche le passage au suivant. */
+.slider { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.slider__track { display: grid; flex: 1 1 auto; touch-action: pan-y; }
+.slider__slide {
+  grid-area: 1 / 1; display: flex; flex-direction: column; min-width: 0;
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease, visibility 0s linear 0.6s;
+}
+.slider__slide.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity 0.6s ease, transform 0.6s ease; }
+.slider__slide > .card { flex: 1 1 auto; }
+/* Dans le diaporama, l'image du grand article s'étire pour que toutes les diapositives aient la même hauteur, quel que soit l'écran. */
+.slider .card--lead .card__media { position: relative; flex: 1 1 auto; }
+.slider .card--lead .card__media:not(.card__media--empty) img { position: absolute; inset: 0; }
+.slider__nav { display: flex; align-items: center; gap: 10px; }
+.slider__btn {
+  display: inline-grid; place-items: center; flex: none; width: 34px; height: 34px; padding: 0;
+  border: 2px solid var(--ligne); background: transparent; color: var(--texte-fort); cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.slider__btn:hover, .slider__btn:focus-visible { border-color: var(--rouge); color: var(--rouge-texte); }
+.slider__dots { display: flex; flex: 1 1 auto; justify-content: center; gap: 8px; margin: 0; padding: 0; list-style: none; min-width: 0; }
+.slider__dots li { flex: 0 1 40px; min-width: 10px; }
+.slider__dot { position: relative; display: block; width: 100%; height: 16px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.slider__dot::before { content: ''; position: absolute; inset: 6px 0; background: var(--ligne); transition: background-color 0.2s ease; }
+.slider__dot:hover::before, .slider__dot:focus-visible::before { background: var(--texte-doux); }
+.slider__fill { position: absolute; inset: 6px 0; background: var(--rouge); transform-origin: left; animation: slider-fill var(--slider-interval, 7s) linear forwards; }
+.slider--paused .slider__fill { animation-play-state: paused; }
+@keyframes slider-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
 /* Fenêtres fixes : même squelette pour les trois, pied calé en bas. */
 .windows { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin: 44px 0 0; }
 .window { border-top: 6px solid var(--rouge); background: var(--fond-papier); padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }

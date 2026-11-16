@@ -77,11 +77,12 @@ export async function getLatestArticles(limit = 6, excludeIds: (number | string)
   })
 }
 
-export async function getFeaturedArticles(limit = 3) {
+/** Articles cochés « À la une » (les plus récents d'abord), sans ceux de `excludeIds` (par exemple ceux du diaporama). */
+export async function getFeaturedArticles(limit = 3, excludeIds: (number | string)[] = []) {
   const payload = await getPayloadClient()
   const featured = await payload.find({
     collection: 'articles',
-    where: { and: [VISIBLE, { featured: { equals: true } }] },
+    where: { and: [VISIBLE, { featured: { equals: true } }, ...(excludeIds.length ? [{ id: { not_in: excludeIds } }] : [])] },
     sort: '-date',
     limit,
     depth: 1,
@@ -89,7 +90,7 @@ export async function getFeaturedArticles(limit = 3) {
   })
   if (featured.docs.length >= limit) return featured.docs
   // Moins d'articles cochés que de places : les cochés passent en premier, les plus récents complètent (jamais de colonne vide).
-  const fill = await getLatestArticles(limit - featured.docs.length, featured.docs.map((a) => a.id))
+  const fill = await getLatestArticles(limit - featured.docs.length, [...excludeIds, ...featured.docs.map((a) => a.id)])
   return [...featured.docs, ...fill.docs]
 }
 
