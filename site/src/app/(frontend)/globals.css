@@ -224,7 +224,7 @@ a { color: var(--rouge-texte); }
 .card__media--empty img { width: 62%; height: 78%; object-fit: contain; filter: none; }
 .card:hover .card__media--empty img { transform: scale(1.04); }
 .card--row .card__media--empty img, .card--compact .card__media--empty img { width: 80%; height: 80%; }
-.card__body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.card__body, .card__head { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 /* Titres : jamais plus de N lignes (coupure avec points de suspension), un cran plus petit quand ils sont longs. */
 .clamp, .card__title, .card__chapo, .window__title, .window__text {
   display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 2px;
@@ -246,6 +246,14 @@ a { color: var(--rouge-texte); }
 .card--lead .card__title { font-size: clamp(26px, 3vw, 36px); line-height: 1.1; letter-spacing: -0.02em; -webkit-line-clamp: 3; }
 .card--lead .card__title--long { font-size: clamp(22px, 2.3vw, 28px); line-height: 1.15; -webkit-line-clamp: 4; }
 .card--lead .card__chapo { font-size: 17px; color: var(--texte); -webkit-line-clamp: 3; }
+/* Grand article : le bloc rubrique + titre est au-dessus du visuel ; le texte sous le visuel n'a plus que le chapeau et la date. */
+.card--lead .card__head { margin-bottom: 4px; }
+.card--lead .card__body:empty { display: none; }
+/* Grand article en « image entière » : la photo entière est posée sur une version floutée d'elle-même, pas sur un à-plat gris. */
+.card--lead.card--contain .card__media { position: relative; background-size: cover; background-position: center; }
+.card--lead.card--contain .card__media::before { content: ''; position: absolute; inset: -24px; background: inherit; filter: var(--thumb-filter) blur(20px); transition: filter 0.35s ease; }
+.card--lead.card--contain:hover .card__media::before, .card--lead.card--contain:focus-within .card__media::before { filter: blur(20px); }
+.card--lead.card--contain .card__media img { position: relative; z-index: 1; padding: 0; }
 .card--row, .card--compact { flex-direction: row; gap: 14px; align-items: flex-start; }
 .card--row .card__media, .card--compact .card__media { flex: 0 0 120px; aspect-ratio: 4 / 3; }
 .une__side .card--row .card__media { flex-basis: 44%; aspect-ratio: 16 / 10; }

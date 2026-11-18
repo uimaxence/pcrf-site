@@ -34,20 +34,38 @@ export async function ArticleCard({ article, variant = 'card', tall = false, med
   const img = articleImage(article, variant === 'lead' ? 'large' : variant === 'compact' ? 'thumbnail' : 'card')
   const logo = img ? null : mediaUrl((await getSite()).logo, 'card')
   const objectPosition = article.coverPosition ? POSITIONS[article.coverPosition] : undefined
+  // Grand article en « image entière » : la même photo, floutée, sert de fond derrière l'image entière (voir le CSS).
+  const mediaStyle = variant === 'lead' && article.coverFit === 'contain' && img ? { backgroundImage: `url("${img.src}")` } : undefined
   const rub = article.rubrique && typeof article.rubrique === 'object' ? article.rubrique : null
   const href = `/${article.slug}`
   const title = frTypo(article.title.trim())
   const titleClass = `card__title${title.length > LONG_TITLE ? ' card__title--long' : ''}`
   const showChapo = (variant === 'card' || variant === 'lead') && !!article.chapo
+  // Rubrique et titre : au-dessus du visuel pour le grand article (on lit le sujet avant de descendre), sous le visuel sinon.
+  const head = (
+    <>
+      {rub && (
+        <Link className="eyebrow" href={rubriqueHref(rub)}>
+          {rub.name}
+        </Link>
+      )}
+      <h3 className={titleClass}>
+        <Link href={href} title={title.length > LONG_TITLE ? title : undefined}>
+          {title}
+        </Link>
+      </h3>
+    </>
+  )
   return (
     <article className={`card card--${variant}${tall ? ' card--tall' : ''}${article.coverFit === 'contain' ? ' card--contain' : ''}`}>
+      {variant === 'lead' && <div className="card__head">{head}</div>}
       {img && mediaHref ? (
         <a className="card__media" href={mediaHref} target="_blank" rel="noopener" tabIndex={-1} aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={img.src} alt="" loading="lazy" style={objectPosition ? { objectPosition } : undefined} />
         </a>
       ) : img ? (
-        <Link className="card__media" href={href} tabIndex={-1} aria-hidden="true">
+        <Link className="card__media" href={href} tabIndex={-1} aria-hidden="true" style={mediaStyle}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={img.src} alt="" loading={variant === 'lead' ? 'eager' : 'lazy'} style={objectPosition ? { objectPosition } : undefined} />
         </Link>
@@ -62,16 +80,7 @@ export async function ArticleCard({ article, variant = 'card', tall = false, med
         </Link>
       )}
       <div className="card__body">
-        {rub && (
-          <Link className="eyebrow" href={rubriqueHref(rub)}>
-            {rub.name}
-          </Link>
-        )}
-        <h3 className={titleClass}>
-          <Link href={href} title={title.length > LONG_TITLE ? title : undefined}>
-            {title}
-          </Link>
-        </h3>
+        {variant !== 'lead' && head}
         {showChapo && <p className="card__chapo">{frTypo(excerpt(article.chapo, variant === 'lead' ? 240 : 140))}</p>}
         {mediaHref && (
           <a className="card__ext" href={mediaHref} target="_blank" rel="noopener">
