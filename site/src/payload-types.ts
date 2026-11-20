@@ -189,6 +189,10 @@ export interface Article {
   externalUrl?: string | null;
   date: string;
   /**
+   * Dans la liste de sa rubrique, l’article est classé par date, le plus récent d’abord. « En tête » le place avant les autres, « En fin » après les autres, quelle que soit sa date.
+   */
+  placement?: ('debut' | 'date' | 'fin') | null;
+  /**
    * Cocher pour afficher l’article en haut de la page d’accueil. Les articles cochés passent en premier ; les places restantes sont complétées par les plus récents. Pour choisir et ordonner les articles à la une : Page d’accueil › À la une.
    */
   featured?: boolean | null;
@@ -474,6 +478,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   rubrique?: T;
   externalUrl?: T;
   date?: T;
+  placement?: T;
   featured?: T;
   congres?: T;
   visible?: T;

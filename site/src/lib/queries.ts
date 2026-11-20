@@ -94,13 +94,16 @@ export async function getFeaturedArticles(limit = 3, excludeIds: (number | strin
   return [...featured.docs, ...fill.docs]
 }
 
+/** Ordre des listes de rubrique : « En tête » d'abord, puis par date, « En fin » en dernier (champ « Place dans la rubrique »). */
+export const RUBRIQUE_SORT = ['placement', '-date']
+
 export async function getArticlesByRubrique(rubrique: Rubrique, page = 1, limit = 12) {
   const payload = await getPayloadClient()
   const ids = await rubriqueFamilyIds(rubrique)
   return payload.find({
     collection: 'articles',
     where: { and: [VISIBLE, { rubrique: { in: ids } }] },
-    sort: '-date',
+    sort: RUBRIQUE_SORT,
     page,
     limit,
     depth: 1,
@@ -172,7 +175,7 @@ export async function getDirectArticles(rubrique: Rubrique) {
   const res = await payload.find({
     collection: 'articles',
     where: { and: [VISIBLE, { rubrique: { equals: rubrique.id } }] },
-    sort: '-date',
+    sort: RUBRIQUE_SORT,
     limit: DIRECT_LIMIT,
     depth: 1,
     select: ARTICLE_LIST_SELECT,
@@ -187,7 +190,7 @@ export async function getFamilyArticlesExcluding(rubrique: Rubrique, excludeIds:
   return payload.find({
     collection: 'articles',
     where: { and: [VISIBLE, { rubrique: { in: ids } }, ...(excludeIds.length ? [{ id: { not_in: excludeIds } }] : [])] },
-    sort: '-date',
+    sort: RUBRIQUE_SORT,
     page,
     limit,
     depth: 1,

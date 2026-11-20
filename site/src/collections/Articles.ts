@@ -108,6 +108,22 @@ export const Articles: CollectionConfig = {
       index: true,
     },
     {
+      // L'ordre des options fixe l'ordre de tri en base (type énuméré Postgres) : en tête, puis par date, puis en fin.
+      name: 'placement',
+      type: 'select',
+      label: 'Place dans la rubrique',
+      defaultValue: 'date',
+      options: [
+        { label: 'En tête de la rubrique', value: 'debut' },
+        { label: 'Par date (normal)', value: 'date' },
+        { label: 'En fin de la rubrique', value: 'fin' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Dans la liste de sa rubrique, l’article est classé par date, le plus récent d’abord. « En tête » le place avant les autres, « En fin » après les autres, quelle que soit sa date.',
+      },
+    },
+    {
       name: 'featured',
       type: 'checkbox',
       label: 'À la une',

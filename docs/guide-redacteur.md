@@ -22,6 +22,7 @@ Dans le menu de gauche, cliquez sur **Articles**, puis sur **Créer**.
 | **Rubrique** (à droite) | Obligatoire : France, International, Luttes, Journal, Campagnes, Vidéos, Théorie, Matériel (Brochures, Affiches, Tracts, Goodies)… |
 | **Site de la campagne** (à droite) | Pour un article de la rubrique Campagnes : l'adresse du site de la campagne. Dans la liste des campagnes et en tête de l'article, le logo ouvre directement ce site. |
 | **Date de publication** | Proposée automatiquement. Modifiez-la pour antidater ou programmer. |
+| **Place dans la rubrique** (à droite) | Les articles d'une rubrique sont classés par date, le plus récent d'abord. Choisissez « En tête de la rubrique » ou « En fin de la rubrique » pour sortir un article de cet ordre, quelle que soit sa date (par exemple une série d'affiches à garder en fin de liste). |
 | **Mettre à la une** | Cochez pour afficher l'article en haut de l'accueil (en grand, ou dans la colonne de droite). Pour choisir précisément les articles et leur ordre, voir « Choisir les articles à la une » plus bas. |
 
 Vous pouvez coller un texte venant de Word ou de LibreOffice : la mise en forme de base est conservée.
