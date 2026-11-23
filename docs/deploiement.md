@@ -62,6 +62,12 @@ pnpm retours:novembre4                          # fin de la rubrique « Informat
 > schéma sans ces colonnes, et la production échoue avec « column "prefix" does not exist ». En local, chargez d'abord
 > `site/.env.neon.local` (ou exportez les `S3_*`), puis lancez `pnpm payload migrate:create`.
 
+> **Attention : jouer les scripts de données en production avec `NODE_ENV=production`.** Lancé sans cette variable
+> (`pnpm payload run …`, `pnpm retours:…`, `pnpm portfolios`), Payload est en mode développement : il « pousse » le schéma
+> sur la base de production et inscrit une ligne `dev` dans la table `payload_migrations`. Au déploiement suivant,
+> `pnpm payload migrate` pose alors une question interactive et le build Vercel reste bloqué en « Building ». Si cela
+> arrive : `DELETE FROM payload_migrations WHERE name = 'dev';` sur la base, annuler le build, puis `vercel redeploy`.
+
 ## Construire et lancer
 
 ```sh
