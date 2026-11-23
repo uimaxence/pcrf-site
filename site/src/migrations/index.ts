@@ -10,6 +10,7 @@ import * as migration_20261114_190137_deux_colonnes_pied_page_spip_id_pages from
 import * as migration_20261116_081913_diaporama_une from './20261116_081913_diaporama_une';
 import * as migration_20261116_122104_retrait_diaporama from './20261116_122104_retrait_diaporama';
 import * as migration_20261120_134610_place_rubrique from './20261120_134610_place_rubrique';
+import * as migration_20261123_100609_boutique from './20261123_100609_boutique';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20261120_134610_place_rubrique.up,
     down: migration_20261120_134610_place_rubrique.down,
-    name: '20261120_134610_place_rubrique'
+    name: '20261120_134610_place_rubrique',
+  },
+  {
+    up: migration_20261123_100609_boutique.up,
+    down: migration_20261123_100609_boutique.down,
+    name: '20261123_100609_boutique'
   },
 ];

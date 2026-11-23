@@ -660,7 +660,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
- * Nom, bandeau, réseaux sociaux, lettre d’information, dons, contact.
+ * Nom, bandeau, réseaux sociaux, lettre d’information, dons, boutique, contact.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site".
@@ -699,6 +699,10 @@ export interface Site {
    */
   brevoFormUrl?: string | null;
   helloassoUrl?: string | null;
+  /**
+   * Lien de la boutique en ligne (HelloAsso par exemple). Tant qu’il est vide, aucun bouton « Boutique » n’apparaît. Une fois rempli, le bouton s’affiche dans la barre du haut de toutes les pages et en tête de la rubrique Matériel.
+   */
+  boutiqueUrl?: string | null;
   donText?: string | null;
   journalName?: string | null;
   journalSubscribeText?: string | null;
@@ -833,6 +837,7 @@ export interface SiteSelect<T extends boolean = true> {
   newsletterText?: T;
   brevoFormUrl?: T;
   helloassoUrl?: T;
+  boutiqueUrl?: T;
   donText?: T;
   journalName?: T;
   journalSubscribeText?: T;

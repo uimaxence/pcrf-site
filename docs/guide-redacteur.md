@@ -77,6 +77,10 @@ La fenêtre « Journal » fonctionne de la même façon : les couvertures des tr
 
 Les réglages du site (bandeau, réseaux sociaux, lettre d'information, HelloAsso, fenêtres de l'accueil) sont dans le menu **Structure** › **Réglages du site** et **Page d'accueil**.
 
+## Le bouton « Boutique »
+
+Dans **Réglages du site › Dons, boutique et journal › Adresse de la boutique**, collez le lien de la boutique en ligne (HelloAsso). Dès que le champ est rempli, un bouton « Boutique » apparaît dans la barre du haut de toutes les pages (et dans le menu sur téléphone), ainsi qu'un bouton « Voir la boutique en ligne » en tête de la rubrique Matériel et de ses sous-rubriques. Videz le champ pour retirer les boutons. Si la boutique change d'adresse, remplacez simplement le lien.
+
 ## En cas de problème
 
 Rechargez la page. Si un message d'erreur persiste, notez l'heure et ce que vous faisiez, et prévenez l'administrateur du site.

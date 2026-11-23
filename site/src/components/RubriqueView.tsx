@@ -48,8 +48,10 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
       ? await getFamilyArticlesExcluding(rubrique, direct.map((d) => d.id), page, 12)
       : await getArticlesByRubrique(rubrique, page, 12)
   if (res && page > 1 && page > res.totalPages) notFound()
-  const site = rubrique.slug === 'videos' ? await getSite() : null
-  const youtube = site?.youtube
+  const site = await getSite()
+  const youtube = rubrique.slug === 'videos' ? site.youtube : null
+  // Matériel et ses sous-rubriques : bouton vers la boutique en ligne réglée dans Réglages du site (rien tant que l'adresse est vide).
+  const boutique = tall ? site.boutiqueUrl : null
 
   return (
     <div className="wrap">
@@ -68,8 +70,13 @@ export async function RubriqueView({ slug, page }: { slug: string; page: number 
         <h1>{rubrique.name}</h1>
         {rubrique.description && <p>{rubrique.description}</p>}
         {youtube && (
-          <a className="yt-link" href={youtube} target="_blank" rel="noopener">
+          <a className="head-link" href={youtube} target="_blank" rel="noopener">
             Voir toutes nos vidéos sur YouTube <span aria-hidden="true">→</span>
+          </a>
+        )}
+        {boutique && (
+          <a className="head-link" href={boutique} target="_blank" rel="noopener">
+            Voir la boutique en ligne <span aria-hidden="true">→</span>
           </a>
         )}
         {children.length > 0 && (

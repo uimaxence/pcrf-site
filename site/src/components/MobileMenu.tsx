@@ -12,6 +12,8 @@ type Props = {
   primary: MenuItem[]
   secondary: MenuItem[]
   newsletterUrl?: string | null
+  /** Boutique en ligne (Réglages du site) : bouton affiché seulement si l'adresse est renseignée. */
+  boutiqueUrl?: string | null
   /** Recherche et réseaux sociaux : rendus côté serveur, placés dans le panneau. */
   search: ReactNode
   social: ReactNode
@@ -35,7 +37,7 @@ function Item({ item, index, current, onNavigate }: { item: MenuItem; index: num
 }
 
 /** Menu des petits écrans : un bouton dans la barre du haut ouvre un panneau avec toute la navigation. */
-export function MobileMenu({ name, primary, secondary, newsletterUrl, search, social }: Props) {
+export function MobileMenu({ name, primary, secondary, newsletterUrl, boutiqueUrl, search, social }: Props) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
   const burger = useRef<HTMLButtonElement>(null)
@@ -139,6 +141,11 @@ export function MobileMenu({ name, primary, secondary, newsletterUrl, search, so
               {newsletterUrl && (
                 <a className="btn btn--ghost" href={newsletterUrl} target="_blank" rel="noopener">
                   Lettre d’info
+                </a>
+              )}
+              {boutiqueUrl && (
+                <a className="btn btn--ghost" href={boutiqueUrl} target="_blank" rel="noopener">
+                  Boutique
                 </a>
               )}
             </div>

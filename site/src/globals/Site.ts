@@ -5,7 +5,7 @@ import { revalidateGlobalAfterChange } from '@/hooks/revalidate'
 export const Site: GlobalConfig = {
   slug: 'site',
   label: 'Réglages du site',
-  admin: { group: 'Structure', description: 'Nom, bandeau, réseaux sociaux, lettre d’information, dons, contact.' },
+  admin: { group: 'Structure', description: 'Nom, bandeau, réseaux sociaux, lettre d’information, dons, boutique, contact.' },
   access: { read: anyone, update: isAdmin },
   hooks: { afterChange: [revalidateGlobalAfterChange] },
   fields: [
@@ -57,9 +57,17 @@ export const Site: GlobalConfig = {
           ],
         },
         {
-          label: 'Dons et journal',
+          label: 'Dons, boutique et journal',
           fields: [
             { name: 'helloassoUrl', type: 'text', label: 'Adresse HelloAsso pour les dons' },
+            {
+              name: 'boutiqueUrl',
+              type: 'text',
+              label: 'Adresse de la boutique',
+              admin: {
+                description: 'Lien de la boutique en ligne (HelloAsso par exemple). Tant qu’il est vide, aucun bouton « Boutique » n’apparaît. Une fois rempli, le bouton s’affiche dans la barre du haut de toutes les pages et en tête de la rubrique Matériel.',
+              },
+            },
             { name: 'donText', type: 'textarea', label: 'Texte du bloc Don', defaultValue: 'Le PCRF ne vit que des cotisations et des dons de ses membres et sympathisants. Les dons ouvrent droit à une réduction d’impôt de 66 %.' },
             { name: 'journalName', type: 'text', label: 'Nom du journal', defaultValue: 'Intervention Communiste' },
             { name: 'journalSubscribeText', type: 'textarea', label: 'Texte abonnement', defaultValue: '20 € pour 1 an, 10 € étudiants et privés d’emploi, 9 € e-abonnement, soutien à partir de 30 €. Chèque à l’ordre de « Mandataire PCRF ».' },
