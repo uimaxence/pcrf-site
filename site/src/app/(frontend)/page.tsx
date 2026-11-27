@@ -6,7 +6,7 @@ import { FixedWindows } from '@/components/FixedWindows'
 import { Newsletter } from '@/components/Newsletter'
 import { SectionTitle } from '@/components/SectionTitle'
 import { rubriqueHref } from '@/lib/links'
-import { mediaUrl } from '@/lib/media'
+import { mediaDoc, mediaUrl } from '@/lib/media'
 import {
   getAccueil,
   getArticlesByRubrique,
@@ -38,7 +38,15 @@ export default async function HomePage() {
   const blocks = (accueil.rubriqueBlocks ?? []).filter((r): r is Rubrique => typeof r === 'object')
   const blockData = await Promise.all(blocks.map(async (r) => ({ r, docs: (await getArticlesByRubrique(r, 1, 4)).docs })))
   const banner = site.bannerEnabled ? mediaUrl(site.bannerImage, 'banner') : null
-  const slides = (site.mastheadImages ?? []).map((m) => mediaUrl(m.image, 'card')).filter((u): u is string => !!u)
+  // Cadre 3 × 2 : une photo qui y perdrait plus d'un tiers (panorama au-delà de 2,25:1, carrée ou verticale) est affichée entière sur fond flouté, sauf choix contraire dans l'admin.
+  const slides = (site.mastheadImages ?? []).flatMap((m) => {
+    const src = mediaUrl(m.image, 'card')
+    if (!src) return []
+    const media = mediaDoc(m.image)
+    const ratio = media?.width && media?.height ? media.width / media.height : 1.5
+    const contain = m.fit === 'contain' || (m.fit !== 'cover' && (ratio >= 2.25 || ratio <= 1))
+    return [{ src, contain }]
+  })
 
   return (
     <>
@@ -46,7 +54,7 @@ export default async function HomePage() {
         <div className="bandeau">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={banner} alt="" />
-          <BandeauSlides images={slides} />
+          <BandeauSlides slides={slides} />
         </div>
       )}
       <div className="wrap">

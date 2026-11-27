@@ -11,6 +11,7 @@ import * as migration_20261116_081913_diaporama_une from './20261116_081913_diap
 import * as migration_20261116_122104_retrait_diaporama from './20261116_122104_retrait_diaporama';
 import * as migration_20261120_134610_place_rubrique from './20261120_134610_place_rubrique';
 import * as migration_20261123_100609_boutique from './20261123_100609_boutique';
+import * as migration_20261127_091046_masthead_fit from './20261127_091046_masthead_fit';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261123_100609_boutique.up,
     down: migration_20261123_100609_boutique.down,
-    name: '20261123_100609_boutique'
+    name: '20261123_100609_boutique',
+  },
+  {
+    up: migration_20261127_091046_masthead_fit.up,
+    down: migration_20261127_091046_masthead_fit.down,
+    name: '20261127_091046_masthead_fit'
   },
 ];

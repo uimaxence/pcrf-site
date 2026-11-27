@@ -27,8 +27,24 @@ export const Site: GlobalConfig = {
               type: 'array',
               label: 'Images défilantes incrustées dans le bandeau',
               labels: { singular: 'Image', plural: 'Images' },
-              admin: { description: 'Petites images qui se succèdent dans un cadre, à droite du bandeau photo de l’accueil. Format paysage conseillé. Laisser vide pour ne rien afficher.' },
-              fields: [{ name: 'image', type: 'upload', relationTo: 'media', label: 'Image', required: true, filterOptions: { mimeType: { contains: 'image' } } }],
+              admin: { description: 'Petites images qui se succèdent dans un cadre en paysage (3 × 2), à droite du bandeau photo de l’accueil. Laisser vide pour ne rien afficher.' },
+              fields: [
+                { name: 'image', type: 'upload', relationTo: 'media', label: 'Image', required: true, filterOptions: { mimeType: { contains: 'image' } } },
+                {
+                  name: 'fit',
+                  type: 'select',
+                  label: 'Cadrage',
+                  defaultValue: 'auto',
+                  options: [
+                    { label: 'Automatique : entière si elle est très large, carrée ou verticale, sinon recadrée', value: 'auto' },
+                    { label: 'Remplir le cadre (l’image est recadrée au centre)', value: 'cover' },
+                    { label: 'Image entière, sans recadrage (sur fond flouté)', value: 'contain' },
+                  ],
+                  admin: {
+                    description: 'Une image « entière » est posée sur une version floutée d’elle-même pour remplir le cadre. En automatique, c’est le cas d’un panorama très large ou d’une photo carrée ou verticale ; les autres remplissent le cadre, recadrées au centre.',
+                  },
+                },
+              ],
             },
           ],
         },

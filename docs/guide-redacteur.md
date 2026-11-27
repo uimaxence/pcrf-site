@@ -77,6 +77,18 @@ La fenêtre « Journal » fonctionne de la même façon : les couvertures des tr
 
 Les réglages du site (bandeau, réseaux sociaux, lettre d'information, HelloAsso, fenêtres de l'accueil) sont dans le menu **Structure** › **Réglages du site** et **Page d'accueil**.
 
+## Les photos qui défilent dans le bandeau de l'accueil
+
+En haut de l'accueil, à droite de la grande photo (Lénine devant la foule), un cadre blanc fait défiler des photos en couleur : chacune reste environ 4 secondes, puis se fond dans la suivante, dans l'ordre de la liste. Un administrateur les gère dans **Structure › Réglages du site**, onglet **Identité**, bloc **« Images défilantes incrustées dans le bandeau »** :
+
+- **Ajouter une photo** : cliquez sur **Ajouter Image** en bas du bloc. Dans la nouvelle ligne, le champ Image propose **Créer un(e) nouveau ou nouvelle** (envoyer une photo depuis l'ordinateur, par glisser-déposer ou « Sélectionnez un fichier », puis **Sauvegarder** dans la fenêtre) ou **Choisir parmi les existant(e)s** (reprendre une photo déjà dans Médias).
+- **Remplacer une photo** : dans sa ligne, retirez l'image (la croix du champ Image), puis choisissez-en une autre.
+- **Retirer une photo** : le menu de la ligne (les trois points à droite) › **Retirer**.
+- **Changer l'ordre** : attrapez la ligne par la poignée à gauche et glissez-la, ou menu de la ligne › **Déplacer vers le haut / vers le bas**.
+- Terminez par **Sauvegarder**, en haut à droite. Le changement est visible tout de suite sur l'accueil (rechargez la page).
+
+Format : le cadre est en paysage (3 × 2). Chaque ligne a un choix **Cadrage**. En *Automatique* (le réglage par défaut), une photo proche de ce format remplit le cadre, recadrée au centre ; un panorama très large, une photo carrée ou verticale est affiché en entier, posé sur une version floutée de lui-même. Pour forcer l'un ou l'autre, choisissez *Remplir le cadre* ou *Image entière*. Prenez des photos de 1 200 pixels de large ou plus. Une seule photo reste fixe. Si la liste est vide, le cadre disparaît.
+
 ## Le bouton « Boutique »
 
 Dans **Réglages du site › Dons, boutique et journal › Adresse de la boutique**, collez le lien de la boutique en ligne (HelloAsso). Dès que le champ est rempli, un bouton « Boutique » apparaît dans la barre du haut de toutes les pages (et dans le menu sur téléphone), ainsi qu'un bouton « Voir la boutique en ligne » en tête de la rubrique Matériel et de ses sous-rubriques. Videz le champ pour retirer les boutons. Si la boutique change d'adresse, remplacez simplement le lien.

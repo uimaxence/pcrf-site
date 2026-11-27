@@ -675,11 +675,15 @@ export interface Site {
   bannerEnabled?: boolean | null;
   bannerImage?: (number | null) | Media;
   /**
-   * Petites images qui se succèdent dans un cadre, à droite du bandeau photo de l’accueil. Format paysage conseillé. Laisser vide pour ne rien afficher.
+   * Petites images qui se succèdent dans un cadre en paysage (3 × 2), à droite du bandeau photo de l’accueil. Laisser vide pour ne rien afficher.
    */
   mastheadImages?:
     | {
         image: number | Media;
+        /**
+         * Une image « entière » est posée sur une version floutée d’elle-même pour remplir le cadre. En automatique, c’est le cas d’un panorama très large ou d’une photo carrée ou verticale ; les autres remplissent le cadre, recadrées au centre.
+         */
+        fit?: ('auto' | 'cover' | 'contain') | null;
         id?: string | null;
       }[]
     | null;
@@ -825,6 +829,7 @@ export interface SiteSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        fit?: T;
         id?: T;
       };
   facebook?: T;
